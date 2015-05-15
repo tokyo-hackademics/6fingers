@@ -13,16 +13,20 @@ public class UserPresentBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context arg0, Intent intent) {
 
-        /*Sent when the user is present after
+        String action = intent.getAction();
+
+        /**
+         * Sent when the user is present after
          * device wakes up (e.g when the keyguard is gone)
          * */
-        if(intent.getAction().equals(Intent.ACTION_USER_PRESENT)){
+        if (action.equals(Intent.ACTION_USER_PRESENT)){
             Log.d("Receiver", "Unlocked");
         }
-        /*Device is shutting down. This is broadcast when the device
+        /**
+         * Device is shutting down. This is broadcast when the device
          * is being shut down (completely turned off, not sleeping)
          * */
-        else if (intent.getAction().equals(Intent.ACTION_SHUTDOWN)) {
+        else if (action.equals(Intent.ACTION_SHUTDOWN)) {
 
         }
     }
