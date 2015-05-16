@@ -29,7 +29,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
     public DbHandler(Context context, String tableName) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        _tableName = tableName;
+        _tableName = tableName.hashCode() + "";
     }
 
     // Creating Tables
