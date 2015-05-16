@@ -7,7 +7,12 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.fingers.six.elarm.common.Word;
+import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
+import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
 
 
 /**
@@ -34,8 +39,13 @@ public class QuestionListDetailFragment extends Fragment {
      */
     public static final String ARG_ITEM_ID = "question_list_name";
 
-    // dummy string
-    private String mItem;
+    // Question list name
+    String qstLstName;
+
+    // Views
+    Button btnAdd;
+    TextView txtAddWord;
+    TextView txtAddMeaning;
 
     private OnFragmentInteractionListener mListener;
 
@@ -73,7 +83,7 @@ public class QuestionListDetailFragment extends Fragment {
                 // Load the dummy content specified by the fragment
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
-                mItem = getArguments().getString(ARG_ITEM_ID);
+                qstLstName = getArguments().getString(ARG_ITEM_ID);
             }
         }
     }
@@ -83,10 +93,13 @@ public class QuestionListDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_question_list_detail, container, false);
+        btnAdd = (Button) v.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
 
-        if (mItem != null) {
-            ((TextView) v.findViewById(R.id.txtTmp)).setText(mItem);
-        }
 
         return v;
     }

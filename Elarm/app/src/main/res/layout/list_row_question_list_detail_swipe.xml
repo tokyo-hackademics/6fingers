@@ -1,0 +1,65 @@
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeQuestionList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
+
+    <LinearLayout
+        android:id="@+id/bottomQuestionListDetailWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:tag="bottomQuestionListDetail">
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#4cd964"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:src="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/trash2"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/red"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:src="@drawable/trash" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/txtAddWord"
+            android:text="word"
+            android:maxLines="3"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txtAddMeaning"
+            android:text="meaning"
+            android:maxLines="3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/txtAddWord"
+            android:layout_toRightOf="@+id/txtAddWord" />
+        <!--<Button-->
+        <!--android:id="@+id/btnAdd"-->
+        <!--style="?android:attr/buttonStyleSmall"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:text="Add" />-->
+
+    </RelativeLayout>
+
+</com.daimajia.swipe.SwipeLayout>
