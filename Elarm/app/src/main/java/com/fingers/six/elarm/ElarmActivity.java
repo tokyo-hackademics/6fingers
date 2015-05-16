@@ -60,19 +60,8 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItemFromDrawer(position);
-
-                // Test show home fragment:
-//                Fragment fragment= new HomeFragment();
-//
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.mainContent, fragment)
-//                        .commit();
-//
-//                mDrawerList.setItemChecked(position, true);
-//                setTitle("Home");
- //               mDrawerLayout.closeDrawer(mDrawerList);
-//                mDrawerLayout.closeDrawer(mDrawerList);
+                // The actions which are added below this line shouldn't be duplicated
+                // with the content in above selectItemFromDrawer(position);
             }
         });
 
@@ -106,9 +95,9 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         fragmentTransaction.commit();
     }
     /**
-*   Called when a particular item from the navigation drawer
-*   is selected.
-*  */
+    *   Called when a particular item from the navigation drawer
+    *   is selected.
+    **/
     private void selectItemFromDrawer(int position) {
         mDrawerList.setItemChecked(position, true);
 
@@ -143,32 +132,10 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
-//        Toast.makeText(getApplicationContext(), mnavigationItems.get(position).mTitle, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
 
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_elarm, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }
