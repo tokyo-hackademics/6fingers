@@ -1,25 +1,25 @@
 package com.fingers.six.elarm;
 
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CheckBox;
 import android.widget.ListView;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.AdapterView;
 import android.view.View;
-import android.widget.Toast;
 
 import com.fingers.six.elarm.sidebar.NavigationItem;
 import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 import java.util.ArrayList;
 
 
-public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnFragmentInteractionListener {
+public class ElarmActivity extends ActionBarActivity {
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
@@ -33,6 +33,10 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
     HomeFragment elarm;
     SettingsFragment settings;
     AlarmFragment      alarm;
+
+    // Manage Preference data by a key-value database
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +63,9 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItemFromDrawer(position);
+                selectItemFromDrawer(position)
+                // The actions which are added below this line shouldn't be duplicated
+                // with the content in above selectItemFromDrawer(position);
 
             }
         });
@@ -92,11 +98,24 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         fragmentTransaction.detach(settings);
         fragmentTransaction.detach(alarm);
         fragmentTransaction.commit();
+
+        // Preference manager
+        sharedPreferences = this.getSharedPreferences("Elarm", MODE_PRIVATE);
+
+        // For first time, we have to define default data
+        editor = sharedPreferences.edit();
+        if(sharedPreferences.getInt("time_mode",-1) == -1) {
+            editor.putInt("time_mode",2); // no time limit
+        }
+        if(sharedPreferences.getInt("unlock_or_not",-1) == -1) {
+            editor.putInt("unlock_or_not",0); // show questions after unlock screen
+        }
+        editor.commit();
     }
     /**
-     *   Called when a particular item from the navigation drawer
-     *   is selected.
-     *  */
+    *   Called when a particular item from the navigation drawer
+    *   is selected.
+    **/
     private void selectItemFromDrawer(int position) {
         mDrawerList.setItemChecked(position, true);
 
@@ -131,14 +150,48 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
-//        Toast.makeText(getApplicationContext(), mnavigationItems.get(position).mTitle, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
+    /**
+     * To handle events when any radio button in the app is clicked.
+     * @param view
+     */
+    public void onRadioButtonClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
 
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.setting_time_mode_1:
+                if (checked) {
+                    // Set time_mode to 0
+                    editor.putInt("time_mode",0);
+                }
+                break;
+
+            case R.id.setting_time_mode_2:
+                if (checked) {
+                    editor.putInt("time_mode",1);
+                }
+                break;
+
+            case R.id.setting_time_mode_3:
+                if(checked) {
+                    editor.putInt("time_mode",2);
+                }
+                break;
+
+            default:
+                break;
+
+        }
+
+        editor.commit();
+
+        Log.d("MainActivity", "Now time_mode = " + sharedPreferences.getInt("time_mode", -1));
     }
 
+<<<<<<< HEAD
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
@@ -160,3 +213,32 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
 //        return super.onOptionsItemSelected(item);
 //    }
 }
+=======
+    /**
+     * To handle events when any checkboxes button in the app is clicked.
+     * @param view
+     */
+    public void onCheckboxClicked(View view) {
+        // Is the button now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.setting_unlock_alarm1:
+                if (checked) {
+                    // Set time_mode to 0
+                    editor.putInt("unlock_or_not",0);
+                } else editor.putInt("unlock_or_not",1);
+                break;
+
+            default:
+                break;
+
+        }
+
+        editor.commit();
+
+        Log.d("MainActivity", "Now unlock_or_not = " + sharedPreferences.getInt("unlock_or_not",-1));
+    }
+}
+>>>>>>> 0a079b2e7b6614e50e1780487bd4d1244e219a83
