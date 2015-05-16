@@ -30,7 +30,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
     FragmentTransaction fragmentTransaction;
 
     // Fragments
-    ElarmActivityFragment elarm;
+    HomeFragment elarm;
     SettingsFragment settings;
 
     @Override
@@ -79,12 +79,12 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         fragmentManager = this.getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
-        elarm = (ElarmActivityFragment)fragmentManager.findFragmentByTag("elarm_main");
+        elarm = (HomeFragment)fragmentManager.findFragmentByTag("elarm_main");
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
 
 
         if(elarm == null) {
-            elarm = new ElarmActivityFragment();
+            elarm = new HomeFragment();
             fragmentTransaction.add(R.id.mainContent,elarm,"elarm_id");
         }
 

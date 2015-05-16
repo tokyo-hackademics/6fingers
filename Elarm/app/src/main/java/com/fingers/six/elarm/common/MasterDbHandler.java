@@ -94,10 +94,13 @@ public class MasterDbHandler extends SQLiteOpenHelper {
     }
 
     public List<QuestionList> search(String keyword) {
+        if(keyword.isEmpty()){
+            return getAllQuestionList();
+        }
         List<QuestionList> questionPackList = new ArrayList<QuestionList>();
         // Select Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " ORDER BY " + LISTNAME
-                + "WHERE (" + LISTNAME + " LIKE '%" + keyword + "%')";
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME
+                + " WHERE (" + LISTNAME + " LIKE '%" + keyword + "%') ORDER BY " + LISTNAME;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);

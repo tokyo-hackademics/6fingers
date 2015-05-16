@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.fingers.six.elarm.adapters.QuestionListAdapter;
+import com.fingers.six.elarm.common.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
 
 import java.util.ArrayList;
@@ -93,11 +96,45 @@ public class HomeFragment extends Fragment {
         return qLst;
     }
 
+    private ArrayList<QuestionList> loadQuestionListFromDb(){
+        MasterDbHandler db = new MasterDbHandler(this.getActivity());
+        return (ArrayList<QuestionList>)db.getAllQuestionList();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        final EditText txtAddList = (EditText)view.findViewById(R.id.txtAddList);
+        Button btnAdd = (Button)view.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (new MasterDbHandler(getActivity())).addList(txtAddList.getText().toString());
+                txtAddList.setText("");
+                //TODO: dismiss keyboard
+
+                // Update listview
+                lstQuestionList.setAdapter(new QuestionListAdapter(getActivity(), ""));
+            }
+        });
+
+        final EditText txtSearch = (EditText)view.findViewById(R.id.txtInputKeyword);
+        Button btnSearch = (Button)view.findViewById(R.id.btnSearch);
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO: dismiss keyboard
+
+                // Update listview
+                lstQuestionList.setAdapter(new QuestionListAdapter(getActivity(), txtSearch.getText().toString()));
+            }
+        });
+
+
+
         lstQuestionList = (ListView) view.findViewById(R.id.lstQuestionList);
         // Defined Array values to show in ListView
 
@@ -112,7 +149,7 @@ public class HomeFragment extends Fragment {
 //                android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
         QuestionListAdapter adapter = new QuestionListAdapter(this.getActivity(),
-                genDummyQuestionList());
+                loadQuestionListFromDb());
         // Assign adapter to ListView
         lstQuestionList.setAdapter(adapter);
 

@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.fingers.six.elarm.R;
+import com.fingers.six.elarm.common.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
 
 /**
@@ -33,6 +34,12 @@ public class QuestionListAdapter extends ArrayAdapter<QuestionList> {
         super(context, R.layout.list_row_question_list);
         this.context = context;
         this.values = values;
+    }
+
+    public QuestionListAdapter(Context context, String q){
+        super(context, R.layout.list_row_question_list);
+        this.context = context;
+        this.values = (ArrayList<QuestionList>)(new MasterDbHandler(context)).search(q);
     }
 
     @Override
