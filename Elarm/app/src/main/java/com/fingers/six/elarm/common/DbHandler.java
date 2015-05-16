@@ -112,7 +112,7 @@ public class DbHandler extends SQLiteOpenHelper {
         // Select Query
         String selectQuery = "SELECT  * FROM " + _tableName + " ORDER BY " + KEY_ENG
                 + "WHERE (" + KEY_ENG + " LIKE '%" + keyword + "%'"
-                + "OR " + KEY_JAP + " LIKE '%" + keyword + "%'";
+                + "OR " + KEY_JAP + " LIKE '%" + keyword + "%')";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
