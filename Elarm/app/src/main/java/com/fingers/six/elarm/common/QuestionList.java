@@ -9,12 +9,15 @@ public class QuestionList {
     private int _id;
     private int _lastId;
     private String _name;
+    private String _dbName;
     private TreeSet<Word> _wordList;
     private int[] _status;
 
     public QuestionList(int id, String name) {
         set_id(id);
         set_name(name);
+        while (name.contains(" ")) name = name.replace(" ", "");
+        set_dbName(name);
         set_wordList(new TreeSet<Word>());
         set_status(new int[3]);
         set_lastId(0);
@@ -88,5 +91,13 @@ public class QuestionList {
 
     public void set_lastId(int _lastId) {
         this._lastId = _lastId;
+    }
+
+    public String get_dbName() {
+        return _dbName;
+    }
+
+    public void set_dbName(String _dbName) {
+        this._dbName = _dbName;
     }
 }
