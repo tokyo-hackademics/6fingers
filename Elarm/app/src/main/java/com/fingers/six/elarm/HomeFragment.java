@@ -14,7 +14,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.fingers.six.elarm.adapters.QuestionListAdapter;
+import com.daimajia.swipe.SwipeLayout;
+import com.fingers.six.elarm.adapters.QuestionListSwipeAdapter;
 import com.fingers.six.elarm.common.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
 
@@ -44,6 +45,7 @@ public class HomeFragment extends Fragment {
 
     //Views
     private ListView lstQuestionList;
+    private SwipeLayout lstQuestionListSwipe;
 
     /**
      * Use this factory method to create a new instance of
@@ -76,26 +78,6 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private ArrayList<QuestionList> genDummyQuestionList() {
-        String[] values = new String[]{"Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View"
-        };
-        ArrayList<QuestionList> qLst = new ArrayList<QuestionList>();
-        for (int i = 0; i < values.length; i++) {
-            QuestionList tmpQstLst = new QuestionList(i, values[i]);
-            tmpQstLst.set_status(new int[]{0, 1, 2});
-            qLst.add(tmpQstLst);
-        }
-
-        return qLst;
-    }
-
     private ArrayList<QuestionList> loadQuestionListFromDb(){
         MasterDbHandler db = new MasterDbHandler(this.getActivity());
         return (ArrayList<QuestionList>)db.getAllQuestionList();
@@ -117,7 +99,7 @@ public class HomeFragment extends Fragment {
                 //TODO: dismiss keyboard
 
                 // Update listview
-                lstQuestionList.setAdapter(new QuestionListAdapter(getActivity(), ""));
+                lstQuestionList.setAdapter(new QuestionListSwipeAdapter(getActivity(), ""));
             }
         });
 
@@ -129,7 +111,7 @@ public class HomeFragment extends Fragment {
                 //TODO: dismiss keyboard
 
                 // Update listview
-                lstQuestionList.setAdapter(new QuestionListAdapter(getActivity(), txtSearch.getText().toString()));
+                lstQuestionList.setAdapter(new QuestionListSwipeAdapter(getActivity(), txtSearch.getText().toString()));
             }
         });
 
@@ -148,7 +130,7 @@ public class HomeFragment extends Fragment {
 //        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
 //                android.R.layout.simple_list_item_1, android.R.id.text1, values);
 
-        QuestionListAdapter adapter = new QuestionListAdapter(this.getActivity(),
+        QuestionListSwipeAdapter adapter = new QuestionListSwipeAdapter(this.getActivity(),
                 loadQuestionListFromDb());
         // Assign adapter to ListView
         lstQuestionList.setAdapter(adapter);
@@ -164,11 +146,11 @@ public class HomeFragment extends Fragment {
                 int itemPosition = position;
 
                 // ListView Clicked item value
-                String itemValue = (String) lstQuestionList.getItemAtPosition(position);
+                QuestionList itemValue = (QuestionList) lstQuestionList.getItemAtPosition(position);
 
                 // Show Alert
                 Toast.makeText(getActivity(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
+                        "Position :" + itemPosition + "  ListItem : " + itemValue.get_name(), Toast.LENGTH_LONG)
                         .show();
 
             }
