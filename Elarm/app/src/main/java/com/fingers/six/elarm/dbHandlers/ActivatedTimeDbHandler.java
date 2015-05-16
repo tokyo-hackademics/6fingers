@@ -67,7 +67,7 @@ public class ActivatedTimeDbHandler extends SQLiteOpenHelper {
 
     private ContentValues getContentValues(LocalDateTime date) {
         ContentValues values = new ContentValues();
-        values.put(KEY_TIME, DateTimeUtils.calcSecs(date));
+        values.put(KEY_TIME, DateTimeUtils.convertToSeconds(date));
         return values;
     }
 }

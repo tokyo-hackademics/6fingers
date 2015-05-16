@@ -165,7 +165,7 @@ public class WordListDbHandler extends SQLiteOpenHelper {
         values.put(KEY_ENG, word.get_eng());
         values.put(KEY_JAP, word.get_jap());
         values.put(KEY_SCORE, word.get_score());
-        values.put(KEY_LAST_CORRECT, word.get_lastCorrected());
+        values.put(KEY_LAST_CORRECT, word.get_lastAsked());
         return values;
     }
 
