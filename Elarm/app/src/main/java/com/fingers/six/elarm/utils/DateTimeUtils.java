@@ -14,11 +14,11 @@ public class DateTimeUtils {
     private static final LocalDate BASE_TIME = new LocalDate(1, 1, 2000);
     private static final LocalDateTime BASE_DATE_TIME = new LocalDateTime(1, 1, 2000, 0, 0, 0);
 
-    public static int calcDays(LocalDate date) {
+    public static int convertToDays(LocalDate date) {
         return Days.daysBetween(BASE_TIME, date).getDays();
     }
 
-    public static int calcSecs(LocalDateTime date) {
+    public static int convertToSeconds(LocalDateTime date) {
         return Seconds.secondsBetween(BASE_TIME, date).getSeconds();
     }
 }
