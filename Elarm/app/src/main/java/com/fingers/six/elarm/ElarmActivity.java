@@ -61,18 +61,6 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItemFromDrawer(position);
 
-                // Test show home fragment:
-//                Fragment fragment= new HomeFragment();
-//
-//                FragmentManager fragmentManager = getSupportFragmentManager();
-//                fragmentManager.beginTransaction()
-//                        .replace(R.id.mainContent, fragment)
-//                        .commit();
-//
-//                mDrawerList.setItemChecked(position, true);
-//                setTitle("Home");
-                //               mDrawerLayout.closeDrawer(mDrawerList);
-//                mDrawerLayout.closeDrawer(mDrawerList);
             }
         });
 
@@ -132,7 +120,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
             //Attach settings
             fragmentTransaction.attach(settings);
         }
-        if(title.equals("Alarm")) {
+        if("Alarm".equals(title)) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
 

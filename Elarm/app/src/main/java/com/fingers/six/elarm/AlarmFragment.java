@@ -7,11 +7,25 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+
+import com.fingers.six.elarm.adapters.AlarmTimeAdapter;
+import com.fingers.six.elarm.common.AlarmHandler;
+import com.fingers.six.elarm.common.AlarmTime;
+import com.fingers.six.elarm.common.MasterDbHandler;
+
+import java.util.ArrayList;
 
 /**
  * Created by PhanVanTrung on 2015/05/16.
  */
 public class AlarmFragment extends Fragment {
+
+
+    //Views
+    private ListView AlarmList;
 
     public AlarmFragment() {
         // Required empty public constructor
@@ -21,10 +35,26 @@ public class AlarmFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_alarm, container, false);
+        View view = inflater.inflate(R.layout.fragment_alarm, container, false);
+
+        AlarmList  = (ListView)view.findViewById(R.id.AlarmList);
+        AlarmHandler alarmHandler = new AlarmHandler(this.getActivity(),"alarm_db");
+        ArrayList<AlarmTime> list = alarmHandler.getAllAlarmTime();
+        AlarmTimeAdapter adapter = new AlarmTimeAdapter(this.getActivity(),list);
+        // Assign adapter to ListView
+        AlarmList.setAdapter(adapter);
+
+        Button btnAdd = (Button)view.findViewById(R.id.btnAdd);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (new AlarmHandler(getActivity(),"alarm_db")).addAlarmTime("12:00","AM");
+
+            }
+        });
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
     }
 
