@@ -20,46 +20,26 @@ public class QuestionList {
         set_lastId(0);
     }
 
-    public boolean addNewWord(String jap, String eng, int score) {
-        try {
-            Word w = new Word(get_lastId() + 1, jap, eng, score);
-            _wordList.add(w);
-            Utilities.appendToFile(_name + ".edb", w.toString());
-            return true;
-        } catch (Exception ex) {
-            return false;
-        }
+    public void addNewWord(int id, String eng, String jap, int score) {
+        _wordList.add(new Word(id, eng, jap, score));
     }
 
-    public boolean removeWord(int id) {
-        try {
-            for (Word w : _wordList) {
-                if (w.get_id() == id)
-                {
-                    _wordList.remove(w);
-                    Utilities.writeAllToFile(_name + ".edb", this.toString());
-                    return true;
-                }
-            }
-            return false;
-        } catch (Exception ex) {
-            return false;
-        }
-    }
-
-    public boolean updateWord(int id, String jap, String eng) {
-        removeWord(id);
-        return addNewWord(jap, eng, 0);
-    }
-
-    public Word search(String query) {
+    public void removeWord(int id) {
         for (Word w : _wordList) {
-            if (w.get_eng().equals(query) || w.get_jap().equals(query))
-            {
-                return w;
+            if (w.get_id() == id) {
+                _wordList.remove(w);
+                return;
             }
         }
-        return null;
+    }
+
+    public void updateWord(int id, String eng, String jap) {
+        for (Word w : _wordList) {
+            if (w.get_id() == id) {
+                w.set_eng(eng);
+                w.set_jap(jap);
+            }
+        }
     }
 
     public String toString() {
