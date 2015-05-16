@@ -4,5 +4,6 @@
     <string name="action_settings">Settings</string>
 
 <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_main_fragment">Hello Elarm Main fragment</string>
     <string name="hello_settings_fragment">Hello settings fragment</string>
 </resources>
