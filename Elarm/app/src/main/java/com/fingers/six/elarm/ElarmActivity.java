@@ -1,5 +1,8 @@
 package com.fingers.six.elarm;
 
+import android.net.Uri;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -14,7 +17,7 @@ import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 import java.util.ArrayList;
 
 
-public class ElarmActivity extends ActionBarActivity {
+public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnFragmentInteractionListener {
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
@@ -44,6 +47,19 @@ public class ElarmActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItemFromDrawer(position);
+
+                // Test show home fragment:
+                Fragment fragment= new HomeFragment();
+
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.mainContent, fragment)
+                        .commit();
+
+                mDrawerList.setItemChecked(position, true);
+                setTitle("Home");
+ //               mDrawerLayout.closeDrawer(mDrawerList);
+//                mDrawerLayout.closeDrawer(mDrawerList);
             }
         });
     }
@@ -53,6 +69,11 @@ public class ElarmActivity extends ActionBarActivity {
 *   */
     private void selectItemFromDrawer(int position) {
         Toast.makeText(getApplicationContext(), mnavigationItems.get(position).mTitle, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 //    @Override
