@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -18,11 +17,10 @@ import android.widget.Toast;
 
 import com.daimajia.swipe.SwipeLayout;
 import com.fingers.six.elarm.adapters.QuestionListSwipeAdapter;
-import com.fingers.six.elarm.common.MasterDbHandler;
+import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**

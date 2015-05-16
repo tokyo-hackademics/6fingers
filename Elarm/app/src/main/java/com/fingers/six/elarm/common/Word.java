@@ -1,5 +1,7 @@
 package com.fingers.six.elarm.common;
 
+import java.text.ParseException;
+
 /**
  * Created by Nghia on 5/16/2015.
  */
@@ -7,6 +9,7 @@ public class Word implements Comparable<Word> {
     private int _id;
     private String _jap;
     private String _eng;
+    private long _lastCorrected;
     private int _score;
 
     public Word() {
@@ -16,11 +19,12 @@ public class Word implements Comparable<Word> {
         set_score(0);
     }
 
-    public Word(int id, String eng, String jap, int score) {
+    public Word(int id, String eng, String jap, int score, long date) throws ParseException {
         set_id(id);
         set_jap(jap);
         set_eng(eng);
         set_score(score);
+        set_lastCorrected(date);
     }
 
     public int get_id() {
@@ -52,7 +56,7 @@ public class Word implements Comparable<Word> {
     }
 
     public void set_score(int _score) {
-        this._score = _score;
+        this._score = Math.max(_score, 990);
     }
 
     @Override
@@ -66,5 +70,13 @@ public class Word implements Comparable<Word> {
 
     public String toString() {
         return _id + "|" + _jap + "|" + _eng + "|" + _score;
+    }
+
+    public long get_lastCorrected() {
+        return _lastCorrected;
+    }
+
+    public void set_lastCorrected(long _lastCorrected) {
+        this._lastCorrected = _lastCorrected;
     }
 }

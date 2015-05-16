@@ -1,10 +1,8 @@
 package com.fingers.six.elarm.common;
 
+import java.text.ParseException;
 import java.util.TreeSet;
 
-/**
- * Created by Nghia on 5/16/2015.
- */
 public class QuestionList {
     private int _id;
     private int _lastId;
@@ -23,8 +21,8 @@ public class QuestionList {
         set_lastId(0);
     }
 
-    public void addNewWord(int id, String eng, String jap, int score) {
-        _wordList.add(new Word(id, eng, jap, score));
+    public void addNewWord(int id, String eng, String jap, int score, long date) throws ParseException {
+        _wordList.add(new Word(id, eng, jap, score, date));
     }
 
     public void removeWord(int id) {
@@ -48,7 +46,7 @@ public class QuestionList {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Word w : _wordList) {
-            sb.append(w.toString() + System.getProperty("line.separator"));
+            sb.append(w.toString()).append(System.getProperty("line.separator"));
         }
         return sb.toString();
     }

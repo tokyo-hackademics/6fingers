@@ -1,8 +1,5 @@
 package com.fingers.six.elarm.common;
 
-/**
- * Created by Nghia on 5/16/2015.
- */
 public class HistoryItem {
     private int _id;
     private long _date;

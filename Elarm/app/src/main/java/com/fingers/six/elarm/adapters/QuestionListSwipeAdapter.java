@@ -13,7 +13,7 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.fingers.six.elarm.R;
-import com.fingers.six.elarm.common.MasterDbHandler;
+import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
 
 import java.util.ArrayList;
