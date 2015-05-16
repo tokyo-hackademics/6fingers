@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.fingers.six.elarm.ElarmActivity;
+
 /**
  * Created by marxen68 on 2015/05/15.
  */

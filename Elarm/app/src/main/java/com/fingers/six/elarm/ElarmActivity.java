@@ -1,5 +1,9 @@
 package com.fingers.six.elarm;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.AdapterView;
 import android.view.View;
 
+import com.fingers.six.elarm.common.UserPresentBroadcastReceiver;
 import com.fingers.six.elarm.fragments.AlarmFragment;
 import com.fingers.six.elarm.fragments.HomeFragment;
 import com.fingers.six.elarm.fragments.QuestionFragment;
@@ -42,6 +47,9 @@ public class ElarmActivity extends ActionBarActivity {
     // Manage Preference data by a key-value database
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+
+    // BroadCastReceiver to catch unlock screen event
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,6 +130,28 @@ public class ElarmActivity extends ActionBarActivity {
             editor.putInt("unlock_or_not",0); // show questions after unlock screen
         }
         editor.commit();
+
+        // BroadCastReceiver
+        broadcastReceiver =  new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                if(Intent.ACTION_USER_PRESENT.equalsIgnoreCase(action)) {
+                    fragmentTransaction = fragmentManager.beginTransaction();
+
+                    fragmentTransaction.detach(elarm);
+                    fragmentTransaction.detach(settings);
+                    fragmentTransaction.detach(alarm);
+                    fragmentTransaction.attach(question);
+
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT);
+        registerReceiver(broadcastReceiver, intentFilter);
     }
     /**
     *   Called when a particular item from the navigation drawer
@@ -140,6 +170,7 @@ public class ElarmActivity extends ActionBarActivity {
             // Detach all presented fragments
             fragmentTransaction.detach(settings);
             fragmentTransaction.detach(alarm);
+            fragmentTransaction.detach(question);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
@@ -147,12 +178,14 @@ public class ElarmActivity extends ActionBarActivity {
         else if("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(alarm);
+            fragmentTransaction.detach(question);
             //Attach settings
             fragmentTransaction.attach(settings);
         }
         if(title.equals("Alarm")) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
+            fragmentTransaction.detach(question);
             // Attach an alarm view
             fragmentTransaction.attach(alarm);
         }
