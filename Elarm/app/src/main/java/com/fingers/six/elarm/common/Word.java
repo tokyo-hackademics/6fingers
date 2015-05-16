@@ -16,7 +16,7 @@ public class Word implements Comparable<Word> {
         set_score(0);
     }
 
-    public Word(int id, String jap, String eng, int score) {
+    public Word(int id, String eng, String jap, int score) {
         set_id(id);
         set_jap(jap);
         set_eng(eng);
