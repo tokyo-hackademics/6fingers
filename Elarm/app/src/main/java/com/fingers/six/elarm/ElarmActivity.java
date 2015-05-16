@@ -62,15 +62,15 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
                 selectItemFromDrawer(position);
 
                 // Test show home fragment:
-                Fragment fragment= new HomeFragment();
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.mainContent, fragment)
-                        .commit();
-
-                mDrawerList.setItemChecked(position, true);
-                setTitle("Home");
+//                Fragment fragment= new HomeFragment();
+//
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.mainContent, fragment)
+//                        .commit();
+//
+//                mDrawerList.setItemChecked(position, true);
+//                setTitle("Home");
  //               mDrawerLayout.closeDrawer(mDrawerList);
 //                mDrawerLayout.closeDrawer(mDrawerList);
             }
@@ -101,7 +101,8 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
             fragmentTransaction.add(R.id.mainContent,alarm,"alarm");
         }
 
-      //  fragmentTransaction.detach(settings);
+        fragmentTransaction.detach(settings);
+        fragmentTransaction.detach(alarm);
         fragmentTransaction.commit();
     }
     /**
@@ -119,21 +120,21 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         // Event actions
         if("Home".equalsIgnoreCase(title)) {
             // Detach all presented fragments
-            fragmentTransaction.remove(settings);
-            fragmentTransaction.remove(alarm);
+            fragmentTransaction.detach(settings);
+            fragmentTransaction.detach(alarm);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
         }
         else if("Setting".equalsIgnoreCase(title)) {
-            fragmentTransaction.remove(elarm);
-            fragmentTransaction.remove(alarm);
+            fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(alarm);
             //Attach settings
             fragmentTransaction.attach(settings);
         }
         if(title.equals("Alarm")) {
-            fragmentTransaction.remove(elarm);
-            fragmentTransaction.remove(settings);
+            fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(settings);
 
             fragmentTransaction.attach(alarm);
         }
