@@ -85,7 +85,7 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
-                + KEY_DATE + " INTEGER, "
+                + KEY_DATE + " LONG, "
                 + KEY_QID + " INTEGER, "
                 + KEY_LIST_NAME + " TEXT NOT NULL, "
                 + KEY_SCORE + " INTEGER)";
