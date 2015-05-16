@@ -19,6 +19,7 @@ import com.daimajia.swipe.SwipeLayout;
 import com.fingers.six.elarm.adapters.QuestionListSwipeAdapter;
 import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
+import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
 
 import java.util.ArrayList;
 
@@ -128,6 +129,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 (new MasterDbHandler(getActivity())).addList(txtAddList.getText().toString());
+               // (new WordListDbHandler(getActivity(),txtAddList.getText().toString())).
                 txtAddList.setText("");
                 //TODO: dismiss keyboard
 

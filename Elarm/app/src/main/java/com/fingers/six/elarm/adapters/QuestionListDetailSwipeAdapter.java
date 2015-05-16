@@ -13,41 +13,51 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.fingers.six.elarm.R;
-import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
+import com.fingers.six.elarm.common.Word;
+import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
+import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
 
 import java.util.ArrayList;
 
 /**
- * Created by tatung on 2015/05/16.
+ * Created by tatung on 2015/05/17.
  */
 
-public class QuestionListSwipeAdapter extends BaseSwipeAdapter {
+
+public class QuestionListDetailSwipeAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
-    private ArrayList<QuestionList> values;
+    private ArrayList<Word> values;
     private String querySearch = "";
+    private String qstLstName;
 
-    public QuestionListSwipeAdapter(Context mContext, String q) {
+    public QuestionListDetailSwipeAdapter(Context mContext, String qstLstName, String q) {
         this.mContext = mContext;
         querySearch = q;
-        this.values = (ArrayList<QuestionList>) (new MasterDbHandler(mContext)).search(querySearch);
+        this.qstLstName = qstLstName;
+        try {
+            this.values = (ArrayList<Word>) (new WordListDbHandler(mContext, qstLstName)).search(querySearch);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public QuestionListSwipeAdapter(Context context, ArrayList<QuestionList> values, String querySearch) {
+    public QuestionListDetailSwipeAdapter(Context context, String qstLstName, ArrayList<Word> values, String querySearch) {
         this.mContext = context;
         this.values = values;
+        this.qstLstName = qstLstName;
         this.querySearch = querySearch;
     }
 
     @Override
     public int getSwipeLayoutResourceId(int position) {
-        return R.id.swipeQuestionList;
+        return R.id.swipeQuestionListDetail;
     }
 
     @Override
     public View generateView(int position, ViewGroup parent) {
-        View v = LayoutInflater.from(mContext).inflate(R.layout.list_row_question_list_swipe, null);
+        View v = LayoutInflater.from(mContext).inflate(R.layout.list_row_question_list_detail_swipe, null);
 
 //        final SwipeLayout swipeLayout = (SwipeLayout) v.findViewById(getSwipeLayoutResourceId(position));
 //        swipeLayout.setTag(position);
@@ -57,17 +67,18 @@ public class QuestionListSwipeAdapter extends BaseSwipeAdapter {
 
     @Override
     public void fillValues(int position, View convertView) {
-        TextView textView = (TextView) convertView.findViewById(R.id.lblQuestionListName);
-        textView.setText(values.get(position).get_name());
-        TextView lblGreen = (TextView) convertView.findViewById(R.id.lblGreen);
-        lblGreen.setText(values.get(position).get_status()[0] + "");
-        TextView lblYellow = (TextView) convertView.findViewById(R.id.lblYellow);
-        lblYellow.setText(values.get(position).get_status()[1] + "");
-        TextView lblRed = (TextView) convertView.findViewById(R.id.lblRed);
-        lblRed.setText(values.get(position).get_status()[2] + "");
+        TextView lblWord = (TextView) convertView.findViewById(R.id.lblWord);
+        lblWord.setText(values.get(position).get_eng());
+
+        TextView lblMeaning = (TextView) convertView.findViewById(R.id.lblMeaning);
+        lblMeaning.setText(values.get(position).get_jap());
 
         final SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(getSwipeLayoutResourceId(position));
+        swipeLayout.setShowMode(SwipeLayout.ShowMode.PullOut);
+        swipeLayout.addDrag(SwipeLayout.DragEdge.Right, convertView.findViewById(R.id.bottomQuestionListDetailWrapper));
+
         swipeLayout.setTag(position);
+
         swipeLayout.addSwipeListener(new SimpleSwipeListener() {
             @Override
             public void onOpen(SwipeLayout layout) {
@@ -80,15 +91,20 @@ public class QuestionListSwipeAdapter extends BaseSwipeAdapter {
                 Toast.makeText(mContext, "DoubleClick", Toast.LENGTH_SHORT).show();
             }
         });
-        convertView.findViewById(R.id.delete).setOnClickListener(new View.OnClickListener() {
+        convertView.findViewById(R.id.trash2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int delPos = (int) swipeLayout.getTag();
 
-                (new MasterDbHandler(mContext)).deleteList(values.get(delPos));
-                values = (ArrayList<QuestionList>) (new MasterDbHandler((mContext))).search(querySearch);
+                (new WordListDbHandler(mContext, qstLstName)).deleteWord(values.get(delPos));
+                try {
+                    values = (ArrayList<Word>) (new WordListDbHandler(mContext, qstLstName)).search(querySearch);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 notifyDataSetChanged();
-                Toast.makeText(mContext, "click delete" + swipeLayout.getTag(), Toast.LENGTH_SHORT).show();
+
+                Toast.makeText(mContext, "click trash " + swipeLayout.getTag(), Toast.LENGTH_SHORT).show();
             }
         });
     }

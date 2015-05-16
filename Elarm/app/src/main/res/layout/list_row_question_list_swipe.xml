@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.daimajia.swipe.SwipeLayout
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:swipe="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/swipeQuestionList"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,13 +8,13 @@
     swipe:rightEdgeSwipeOffset="0dp">
     <!-- Bottom View Start-->
     <!--<LinearLayout-->
-        <!--android:id="@+id/bottom_wrapper"-->
-        <!--android:layout_width="160dp"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:background="#66ddff00"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:weightSum="1">-->
-        <!--&lt;!&ndash;What you want to show&ndash;&gt;-->
+    <!--android:id="@+id/bottom_wrapper"-->
+    <!--android:layout_width="160dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:background="#66ddff00"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:weightSum="1">-->
+    <!--&lt;!&ndash;What you want to show&ndash;&gt;-->
     <!--</LinearLayout>-->
 
     <LinearLayout
@@ -47,7 +46,7 @@
             android:layout_height="40dp"
             android:layout_weight="4"
             android:background="@drawable/white"
-            android:text="Yes,Delete"
+            android:text="Yes, Delete"
             android:textColor="#FF5534" />
     </LinearLayout>
 

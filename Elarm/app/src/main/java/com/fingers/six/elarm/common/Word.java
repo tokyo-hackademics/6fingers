@@ -24,6 +24,12 @@ public class Word implements Comparable<Word> {
         set_lastAsked(date);
     }
 
+    public Word(String eng, String jap, int date){
+        set_jap(jap);
+        set_eng(eng);
+        set_lastAsked(date);
+    }
+
     public void subtractPoint() {
         int now = DateTimeUtils.convertToSeconds(new LocalDateTime());
         int gap = now - _lastAsked;

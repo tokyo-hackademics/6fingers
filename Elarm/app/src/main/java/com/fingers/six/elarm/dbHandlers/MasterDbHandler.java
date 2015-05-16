@@ -25,6 +25,9 @@ public class MasterDbHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "ID";
     private static final String KEY_LIST_NAME = "KEY_LIST_NAME";
 
+    // context
+    //Context
+
     public MasterDbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -55,7 +58,13 @@ public class MasterDbHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert(TABLE_NAME, null, values);
+
+        // new table
+        //(new WordListDbHandler())
+
         db.close(); // Closing database connection
+
+
     }
 
     // Getting single record

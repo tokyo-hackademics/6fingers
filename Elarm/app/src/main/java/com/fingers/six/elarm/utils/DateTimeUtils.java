@@ -9,16 +9,17 @@ import org.joda.time.Seconds;
 
 public class DateTimeUtils {
 
-    private DateTimeUtils() { }
+    private DateTimeUtils() {
+    }
 
-    private static final LocalDate BASE_TIME = new LocalDate(1, 1, 2000);
-    private static final LocalDateTime BASE_DATE_TIME = new LocalDateTime(1, 1, 2000, 0, 0, 0);
+    private static final LocalDate BASE_TIME = new LocalDate(2000, 1, 1);
+    private static final LocalDateTime BASE_DATE_TIME = new LocalDateTime(2000, 1, 1, 0, 0, 0);
 
     public static int convertToDays(LocalDate date) {
         return Days.daysBetween(BASE_TIME, date).getDays();
     }
 
     public static int convertToSeconds(LocalDateTime date) {
-        return Seconds.secondsBetween(BASE_TIME, date).getSeconds();
+        return Seconds.secondsBetween(BASE_DATE_TIME, date).getSeconds();
     }
 }

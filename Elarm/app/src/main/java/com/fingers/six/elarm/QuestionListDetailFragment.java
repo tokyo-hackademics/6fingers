@@ -8,11 +8,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.fingers.six.elarm.adapters.QuestionListDetailSwipeAdapter;
 import com.fingers.six.elarm.common.Word;
 import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
 import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
+import com.fingers.six.elarm.utils.DateTimeUtils;
+
+import org.joda.time.LocalDateTime;
+import org.w3c.dom.Text;
 
 
 /**
@@ -44,8 +52,9 @@ public class QuestionListDetailFragment extends Fragment {
 
     // Views
     Button btnAdd;
-    TextView txtAddWord;
-    TextView txtAddMeaning;
+    EditText txtAddWord;
+    EditText txtAddMeaning;
+    ListView lstWordList;
 
     private OnFragmentInteractionListener mListener;
 
@@ -94,11 +103,21 @@ public class QuestionListDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_question_list_detail, container, false);
         btnAdd = (Button) v.findViewById(R.id.btnAdd);
+        txtAddWord = (EditText) v.findViewById(R.id.txtAddWord);
+        txtAddMeaning = (EditText) v.findViewById(R.id.txtAddMeaning);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                (new WordListDbHandler(getActivity(), qstLstName))
+                        .addWord(new Word(txtAddWord.getText().toString(), txtAddMeaning.getText().toString(), DateTimeUtils.convertToSeconds(new LocalDateTime())));
+                lstWordList.setAdapter(new QuestionListDetailSwipeAdapter(getActivity(), qstLstName, ""));
+                txtAddWord.setText("");
+                txtAddMeaning.setText("");
             }
         });
+
+        lstWordList = (ListView) v.findViewById(R.id.lstQuestionDetailList);
+        lstWordList.setAdapter(new QuestionListDetailSwipeAdapter(getActivity(), qstLstName, ""));
 
 
         return v;
@@ -109,6 +128,7 @@ public class QuestionListDetailFragment extends Fragment {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+        Toast.makeText(getActivity(), "in onButtonPressed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -133,7 +153,7 @@ public class QuestionListDetailFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

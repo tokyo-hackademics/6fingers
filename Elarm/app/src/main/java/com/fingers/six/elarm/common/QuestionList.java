@@ -21,7 +21,7 @@ public class QuestionList {
         set_lastId(0);
     }
 
-    public void addNewWord(int id, String eng, String jap, int score, long date) throws ParseException {
+    public void addNewWord(int id, String eng, String jap, int score, int date) throws ParseException {
         _wordList.add(new Word(id, eng, jap, score, date));
     }
 

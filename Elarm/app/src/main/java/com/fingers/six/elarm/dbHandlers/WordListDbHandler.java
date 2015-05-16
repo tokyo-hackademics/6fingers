@@ -31,13 +31,24 @@ public class WordListDbHandler extends SQLiteOpenHelper {
 
     public WordListDbHandler(Context context, String tableName) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        _tableName = tableName.hashCode() + "";
+        _tableName = "T_" + tableName.hashCode() + "";
+
+        String query = "CREATE TABLE '" + _tableName + "'("
+                + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_ENG + " TEXT NOT NULL, "
+                + KEY_JAP + " TEXT NOT NULL, " + KEY_SCORE + " INTEGER, "
+                + KEY_LAST_CORRECT + " LONG)";
+        try {
+            getWritableDatabase().execSQL(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String query = "CREATE TABLE " + _tableName + "("
+        String query = "CREATE TABLE '" + _tableName + "'("
                 + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_ENG + " TEXT NOT NULL, "
                 + KEY_JAP + " TEXT NOT NULL, " + KEY_SCORE + " INTEGER, "
                 + KEY_LAST_CORRECT + " LONG)";
@@ -48,7 +59,7 @@ public class WordListDbHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + _tableName);
+        db.execSQL("DROP TABLE IF EXISTS '" + _tableName + "'");
 
         // Create tables again
         onCreate(db);
@@ -61,7 +72,7 @@ public class WordListDbHandler extends SQLiteOpenHelper {
         ContentValues values = getContentValues(word);
 
         // Inserting Row
-        db.insert(_tableName, null, values);
+        db.insert("'" + _tableName + "'", null, values);
         db.close(); // Closing database connection
     }
 
@@ -82,7 +93,7 @@ public class WordListDbHandler extends SQLiteOpenHelper {
     public List<Word> getAllWords() throws ParseException {
         List<Word> wordList = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + _tableName + " ORDER BY " + KEY_ENG;
+        String selectQuery = "SELECT  * FROM '" + _tableName + "' ORDER BY " + KEY_ENG;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -99,9 +110,15 @@ public class WordListDbHandler extends SQLiteOpenHelper {
     }
 
     public List<Word> search(String keyword) throws ParseException {
+        if (keyword.isEmpty()) {
+            return getAllWords();
+        }
+
         List<Word> wordList = new ArrayList<>();
+
+
         // Select Query
-        String selectQuery = "SELECT  * FROM " + _tableName + " ORDER BY " + KEY_ENG
+        String selectQuery = "SELECT  * FROM '" + _tableName + "' ORDER BY " + KEY_ENG
                 + "WHERE (" + KEY_ENG + " LIKE '%" + keyword + "%'"
                 + "OR " + KEY_JAP + " LIKE '%" + keyword + "%')";
 
@@ -132,8 +149,8 @@ public class WordListDbHandler extends SQLiteOpenHelper {
     // Deleting single word
     public void deleteWord(Word word) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(_tableName, KEY_ID + " = ?",
-                new String[]{String.valueOf(word.get_id())});
+        db.delete("'" + _tableName + "'", KEY_ID + "= " + word.get_id(),
+                null);
         db.close();
     }
 
@@ -174,6 +191,6 @@ public class WordListDbHandler extends SQLiteOpenHelper {
                 cursor.getString(1),
                 cursor.getString(2),
                 Integer.parseInt(cursor.getString(3)),
-                Long.parseLong(cursor.getString(4)));
+                Integer.parseInt(cursor.getString(4)));
     }
 }
