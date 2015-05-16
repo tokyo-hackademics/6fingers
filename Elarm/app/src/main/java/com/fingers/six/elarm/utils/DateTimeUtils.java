@@ -1,18 +1,24 @@
 package com.fingers.six.elarm.utils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import android.util.TimeUtils;
+
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
+import org.joda.time.Seconds;
 
 public class DateTimeUtils {
 
     private DateTimeUtils() { }
 
-    public static long CalcDays(Date date) throws ParseException {
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-        Date date1 = myFormat.parse("01 01 2000");
-        long diff = date.getTime() - date1.getTime();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    private static final LocalDate BASE_TIME = new LocalDate(1, 1, 2000);
+    private static final LocalDateTime BASE_DATE_TIME = new LocalDateTime(1, 1, 2000, 0, 0, 0);
+
+    public static int calcDays(LocalDate date) {
+        return Days.daysBetween(BASE_TIME, date).getDays();
+    }
+
+    public static int calcSecs(LocalDateTime date) {
+        return Seconds.secondsBetween(BASE_TIME, date).getSeconds();
     }
 }
