@@ -56,14 +56,6 @@ public class ProgressTracker extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    private long CalcDays(String date) throws ParseException {
-        SimpleDateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
-        Date date1 = myFormat.parse("01 01 2000");
-        Date date2 = myFormat.parse(date);
-        long diff = date2.getTime() - date1.getTime();
-        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-    }
-
     public void add(HistoryItem historyItem) {
         SQLiteDatabase db = this.getWritableDatabase();
 

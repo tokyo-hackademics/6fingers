@@ -1,5 +1,7 @@
 package com.fingers.six.elarm.common;
 
+import com.fingers.six.elarm.utils.RandomUtils;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,10 +23,10 @@ public class TestManager {
 
         for (int i = 0; i < numberOfQuestions; ++i) {
             qq[i] = new QuestionItem();
-            qq[i].set_word((Word) ww[(int) (Math.random() * ww.length)]);
+            qq[i].set_word((Word) ww[RandomUtils.nextInt(ww.length)]);
             qq[i].set_isEngToJap(isEngToJap);
             String[] ans = new String[4];
-            int r = (int)(Math.random() * 4);
+            int r = RandomUtils.nextInt(4);
             ans[r] = isEngToJap ? qq[i].get_word().get_jap() : qq[i].get_word().get_eng();
             Set<String> s = new HashSet<>();
             s.add(ans[r]);
@@ -32,7 +34,7 @@ public class TestManager {
                 if (j == r) continue;
                 String t;
                 do {
-                    t = (String)allAns[(int)(Math.random() * allAns.length)];
+                    t = (String) allAns[RandomUtils.nextInt(allAns.length)];
                 } while (s.contains(t));
                 ans[j] = t;
                 s.add(t);
@@ -44,7 +46,7 @@ public class TestManager {
     }
 
     private static ArrayList<String> getAllPossibleAns(boolean isEngToJap, QuestionList qlist) {
-        ArrayList<String> ret = new ArrayList<String>();
+        ArrayList<String> ret = new ArrayList<>();
         for (Word w : qlist.get_wordList()) {
             ret.add(isEngToJap ? w.get_jap() : w.get_eng());
         }
