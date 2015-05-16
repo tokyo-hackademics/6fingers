@@ -1,8 +1,11 @@
 package com.fingers.six.elarm;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.AdapterView;
@@ -19,6 +22,15 @@ public class ElarmActivity extends ActionBarActivity {
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
     ListView mDrawerList;
+
+    // Manage fragments
+    FragmentManager fragmentManager;
+    FragmentTransaction fragmentTransaction;
+
+    // Fragments
+    ElarmActivityFragment elarm;
+    SettingsFragment settings;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +46,7 @@ public class ElarmActivity extends ActionBarActivity {
         // DrawerLayout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
-        // Populate the Navigtion Drawer with options
+        // Populate the Navigation Drawer with options
         mDrawerPane = (RelativeLayout) findViewById(R.id.drawerPane);
         mDrawerList = (ListView) findViewById(R.id.navList);
         DrawerListAdapter adapter = new DrawerListAdapter(this, mnavigationItems);
@@ -47,18 +59,59 @@ public class ElarmActivity extends ActionBarActivity {
                 selectItemFromDrawer(position);
             }
         });
+
+        // Manage fragments
+        fragmentManager = this.getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
+        elarm = (ElarmActivityFragment)fragmentManager.findFragmentByTag("elarm_main");
+        settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
+
+
+        if(elarm == null) {
+            elarm = new ElarmActivityFragment();
+            fragmentTransaction.add(R.id.mainContent,elarm,"elarm_id");
+        }
+
+        if(settings == null) {
+            settings = new SettingsFragment();
+            fragmentTransaction.add(R.id.mainContent,settings,"settings");
+        }
+
+        fragmentTransaction.detach(settings);
+        fragmentTransaction.commit();
     }
-    /*
+    /**
 *   Called when a particular item from the navigation drawer
 *   is selected.
 *  */
     private void selectItemFromDrawer(int position) {
         mDrawerList.setItemChecked(position, true);
-        setTitle(mnavigationItems.get(position).mTitle);
+
+        String title = mnavigationItems.get(position).mTitle;
+        setTitle(title);
+        Log.d("MainActivity", title);
+
+        fragmentTransaction = fragmentManager.beginTransaction();
+        // Event actions
+        if("Home".equalsIgnoreCase(title)) {
+            // Detach all presented fragments
+            fragmentTransaction.detach(settings);
+
+            // Attach elarm
+            fragmentTransaction.attach(elarm);
+        }
+        else if("Setting".equalsIgnoreCase(title)) {
+            fragmentTransaction.detach(elarm);
+            //Attach settings
+            fragmentTransaction.attach(settings);
+        }
+
+        fragmentTransaction.commit();
 
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
-        Toast.makeText(getApplicationContext(), mnavigationItems.get(position).mTitle, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), mnavigationItems.get(position).mTitle, Toast.LENGTH_SHORT).show();
     }
 
 //    @Override
