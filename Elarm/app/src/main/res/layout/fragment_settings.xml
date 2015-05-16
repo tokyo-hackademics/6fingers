@@ -19,12 +19,16 @@
             android:text="@string/setting_time_mode_title"
             android:id="@+id/setting_time_mode_title"
             android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material" />
-
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/setting_time_mode_1"
             android:id="@+id/setting_time_mode_1"
+            android:onClick="onRadioButtonClicked"
             android:checked="false"
             android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material" />
 
@@ -33,6 +37,7 @@
             android:layout_height="wrap_content"
             android:text="@string/setting_time_mode_2"
             android:id="@+id/setting_time_mode_2"
+            android:onClick="onRadioButtonClicked"
             android:checked="false"
             android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material" />
 
@@ -41,8 +46,10 @@
             android:layout_height="wrap_content"
             android:text="@string/setting_time_mode_3"
             android:id="@+id/setting_time_mode_3"
+            android:onClick="onRadioButtonClicked"
             android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material"
             android:checked="true" />
+        </RadioGroup>
 
         <LinearLayout
             android:id="@+id/settings_unlock_alarm"
@@ -65,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/setting_unlock_1"
                 android:id="@+id/setting_unlock_alarm1"
+                android:onClick="onCheckboxClicked"
                 android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material"
                 android:checked="true" />
         </LinearLayout>
