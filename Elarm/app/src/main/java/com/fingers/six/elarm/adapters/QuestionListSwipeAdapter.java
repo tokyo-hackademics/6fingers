@@ -26,15 +26,18 @@ public class QuestionListSwipeAdapter extends BaseSwipeAdapter {
 
     private Context mContext;
     private ArrayList<QuestionList> values;
+    private String querySearch = "";
 
     public QuestionListSwipeAdapter(Context mContext, String q) {
         this.mContext = mContext;
-        this.values = (ArrayList<QuestionList>) (new MasterDbHandler(mContext)).search(q);
+        querySearch = q;
+        this.values = (ArrayList<QuestionList>) (new MasterDbHandler(mContext)).search(querySearch);
     }
 
-    public QuestionListSwipeAdapter(Context context, ArrayList<QuestionList> values) {
+    public QuestionListSwipeAdapter(Context context, ArrayList<QuestionList> values, String querySearch) {
         this.mContext = context;
         this.values = values;
+        this.querySearch = querySearch;
     }
 
     @Override
@@ -61,7 +64,7 @@ public class QuestionListSwipeAdapter extends BaseSwipeAdapter {
         TextView lblYellow = (TextView) convertView.findViewById(R.id.lblYellow);
         lblYellow.setText(values.get(position).get_status()[1] + "");
         TextView lblRed = (TextView) convertView.findViewById(R.id.lblRed);
-        lblGreen.setText(values.get(position).get_status()[2] + "");
+        lblRed.setText(values.get(position).get_status()[2] + "");
 
         final SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.setTag(position);
@@ -83,7 +86,7 @@ public class QuestionListSwipeAdapter extends BaseSwipeAdapter {
                 int delPos = (int) swipeLayout.getTag();
 
                 (new MasterDbHandler(mContext)).deleteList(values.get(delPos));
-                values = (ArrayList<QuestionList>) (new MasterDbHandler((mContext))).search("");
+                values = (ArrayList<QuestionList>) (new MasterDbHandler((mContext))).search(querySearch);
                 notifyDataSetChanged();
                 Toast.makeText(mContext, "click delete" + swipeLayout.getTag(), Toast.LENGTH_SHORT).show();
             }

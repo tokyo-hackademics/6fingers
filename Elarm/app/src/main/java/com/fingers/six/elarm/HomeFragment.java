@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,19 +80,14 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private ArrayList<QuestionList> loadQuestionListFromDb(){
-        MasterDbHandler db = new MasterDbHandler(this.getActivity());
-        return (ArrayList<QuestionList>)db.getAllQuestionList();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        final EditText txtAddList = (EditText)view.findViewById(R.id.txtAddList);
-        Button btnAdd = (Button)view.findViewById(R.id.btnAdd);
+        final EditText txtAddList = (EditText) view.findViewById(R.id.txtAddList);
+        Button btnAdd = (Button) view.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,8 +100,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        final EditText txtSearch = (EditText)view.findViewById(R.id.txtInputKeyword);
-        Button btnSearch = (Button)view.findViewById(R.id.btnSearch);
+        final EditText txtSearch = (EditText) view.findViewById(R.id.txtInputKeyword);
+        Button btnSearch = (Button) view.findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,22 +113,8 @@ public class HomeFragment extends Fragment {
         });
 
 
-
         lstQuestionList = (ListView) view.findViewById(R.id.lstQuestionList);
-        // Defined Array values to show in ListView
-
-
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-//                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
-        QuestionListSwipeAdapter adapter = new QuestionListSwipeAdapter(this.getActivity(),
-                loadQuestionListFromDb());
+        QuestionListSwipeAdapter adapter = new QuestionListSwipeAdapter(this.getActivity(), txtSearch.getText().toString());
         // Assign adapter to ListView
         lstQuestionList.setAdapter(adapter);
 
@@ -147,6 +130,23 @@ public class HomeFragment extends Fragment {
 
                 // ListView Clicked item value
                 QuestionList itemValue = (QuestionList) lstQuestionList.getItemAtPosition(position);
+
+                getActivity().setTitle("Word List");
+
+                // jump to fragment question list detail
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                // detach home fragment
+                fragmentTransaction.detach(fragmentManager.findFragmentByTag("home"));
+
+                // attach question list detail fragment
+                fragmentTransaction.attach(fragmentManager.findFragmentByTag("questListDetail"));
+
+                fragmentTransaction.commit();
+
+                //fragmentTransaction.replace(R.id.mainContent, fragmentManager.findFragmentByTag("questListDetail")).commit();
+
 
                 // Show Alert
                 Toast.makeText(getActivity(),

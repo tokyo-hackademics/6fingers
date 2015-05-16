@@ -6,4 +6,7 @@
     <string name="hello_main_fragment">Hello Elarm Main fragment</string>
     <string name="hello_settings_fragment">Hello settings fragment</string>
     <string name="action_example">action_example</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

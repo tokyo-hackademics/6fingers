@@ -19,7 +19,7 @@ import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 import java.util.ArrayList;
 
 
-public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnFragmentInteractionListener {
+public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnFragmentInteractionListener, QuestionListDetailFragment.OnFragmentInteractionListener {
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
@@ -32,6 +32,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
     // Fragments
     HomeFragment elarm;
     SettingsFragment settings;
+    QuestionListDetailFragment fragQuestLstDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
 
         elarm = (HomeFragment)fragmentManager.findFragmentByTag("home");
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
+        fragQuestLstDetail = (QuestionListDetailFragment)fragmentManager.findFragmentByTag("questListDetail");
 
 
         if(elarm == null) {
@@ -91,6 +93,11 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         if(settings == null) {
             settings = new SettingsFragment();
             fragmentTransaction.add(R.id.mainContent,settings,"settings");
+        }
+
+        if(fragQuestLstDetail == null){
+            fragQuestLstDetail = new QuestionListDetailFragment();
+            fragmentTransaction.add(R.id.mainContent,fragQuestLstDetail,"questListDetail");
         }
 
         fragmentTransaction.detach(settings);
