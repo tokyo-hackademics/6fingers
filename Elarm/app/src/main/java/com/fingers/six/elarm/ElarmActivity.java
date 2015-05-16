@@ -79,13 +79,13 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         fragmentManager = this.getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
-        elarm = (HomeFragment)fragmentManager.findFragmentByTag("elarm_main");
+        elarm = (HomeFragment)fragmentManager.findFragmentByTag("home");
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
 
 
         if(elarm == null) {
             elarm = new HomeFragment();
-            fragmentTransaction.add(R.id.mainContent,elarm,"elarm_id");
+            fragmentTransaction.add(R.id.mainContent,elarm,"home");
         }
 
         if(settings == null) {
