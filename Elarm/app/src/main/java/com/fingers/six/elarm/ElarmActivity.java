@@ -1,5 +1,7 @@
 package com.fingers.six.elarm;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -33,7 +35,7 @@ public class ElarmActivity extends ActionBarActivity {
         // DrawerLayout
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
-        // Populate the Navigtion Drawer with options
+        // Populate the Navigation Drawer with options
         mDrawerPane = (RelativeLayout) findViewById(R.id.drawerPane);
         mDrawerList = (ListView) findViewById(R.id.navList);
         DrawerListAdapter adapter = new DrawerListAdapter(this, mnavigationItems);
@@ -46,6 +48,16 @@ public class ElarmActivity extends ActionBarActivity {
                 selectItemFromDrawer(position);
             }
         });
+
+        // Manage fragments
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+        ElarmActivityFragment elarm = new ElarmActivityFragment();
+        SettingsFragment settings = new SettingsFragment();
+
+
+
     }
     /*
 *   Called when a particular item from the navigation drawer
