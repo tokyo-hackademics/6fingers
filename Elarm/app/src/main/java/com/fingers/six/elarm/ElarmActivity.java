@@ -1,6 +1,8 @@
 package com.fingers.six.elarm;
 
+import android.net.Uri;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -17,7 +19,7 @@ import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 import java.util.ArrayList;
 
 
-public class ElarmActivity extends ActionBarActivity {
+public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnFragmentInteractionListener {
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
@@ -28,8 +30,9 @@ public class ElarmActivity extends ActionBarActivity {
     FragmentTransaction fragmentTransaction;
 
     // Fragments
-    ElarmActivityFragment elarm;
+    HomeFragment elarm;
     SettingsFragment settings;
+    AlarmFragment      alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,19 @@ public class ElarmActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItemFromDrawer(position);
+
+                // Test show home fragment:
+//                Fragment fragment= new HomeFragment();
+//
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.mainContent, fragment)
+//                        .commit();
+//
+//                mDrawerList.setItemChecked(position, true);
+//                setTitle("Home");
+ //               mDrawerLayout.closeDrawer(mDrawerList);
+//                mDrawerLayout.closeDrawer(mDrawerList);
             }
         });
 
@@ -64,13 +80,15 @@ public class ElarmActivity extends ActionBarActivity {
         fragmentManager = this.getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
-        elarm = (ElarmActivityFragment)fragmentManager.findFragmentByTag("elarm_main");
+        elarm    = (HomeFragment)fragmentManager.findFragmentByTag("elarm");
+
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
+        alarm    = (AlarmFragment)fragmentManager.findFragmentByTag("alarm");
 
 
         if(elarm == null) {
-            elarm = new ElarmActivityFragment();
-            fragmentTransaction.add(R.id.mainContent,elarm,"elarm_id");
+            elarm = new HomeFragment();
+            fragmentTransaction.add(R.id.mainContent,elarm,"elarm");
         }
 
         if(settings == null) {
@@ -78,7 +96,13 @@ public class ElarmActivity extends ActionBarActivity {
             fragmentTransaction.add(R.id.mainContent,settings,"settings");
         }
 
+        if(alarm == null) {
+            alarm = new AlarmFragment();
+            fragmentTransaction.add(R.id.mainContent,alarm,"alarm");
+        }
+
         fragmentTransaction.detach(settings);
+        fragmentTransaction.detach(alarm);
         fragmentTransaction.commit();
     }
     /**
@@ -97,14 +121,22 @@ public class ElarmActivity extends ActionBarActivity {
         if("Home".equalsIgnoreCase(title)) {
             // Detach all presented fragments
             fragmentTransaction.detach(settings);
+            fragmentTransaction.detach(alarm);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
         }
         else if("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(alarm);
             //Attach settings
             fragmentTransaction.attach(settings);
+        }
+        if(title.equals("Alarm")) {
+            fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(settings);
+
+            fragmentTransaction.attach(alarm);
         }
 
         fragmentTransaction.commit();
@@ -112,6 +144,11 @@ public class ElarmActivity extends ActionBarActivity {
         // Close the drawer
         mDrawerLayout.closeDrawer(mDrawerPane);
 //        Toast.makeText(getApplicationContext(), mnavigationItems.get(position).mTitle, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 //    @Override
