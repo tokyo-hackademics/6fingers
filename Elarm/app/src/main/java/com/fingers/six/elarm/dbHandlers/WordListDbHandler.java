@@ -1,4 +1,4 @@
-package com.fingers.six.elarm.common;
+package com.fingers.six.elarm.dbHandlers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,11 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.fingers.six.elarm.common.Word;
+
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DbHandler extends SQLiteOpenHelper {
+public class WordListDbHandler extends SQLiteOpenHelper {
 
     private String _tableName;
     // All Static variables
@@ -27,7 +29,7 @@ public class DbHandler extends SQLiteOpenHelper {
     private static final String KEY_SCORE = "SCORE";
     private static final String KEY_LAST_CORRECT = "LAST_CORRECT";
 
-    public DbHandler(Context context, String tableName) {
+    public WordListDbHandler(Context context, String tableName) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         _tableName = tableName.hashCode() + "";
     }

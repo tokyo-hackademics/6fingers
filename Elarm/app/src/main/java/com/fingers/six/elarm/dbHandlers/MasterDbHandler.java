@@ -1,10 +1,12 @@
-package com.fingers.six.elarm.common;
+package com.fingers.six.elarm.dbHandlers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.fingers.six.elarm.common.QuestionList;
 
 import java.util.ArrayList;
 import java.util.List;

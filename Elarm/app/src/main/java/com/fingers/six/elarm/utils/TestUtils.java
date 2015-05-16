@@ -1,12 +1,15 @@
-package com.fingers.six.elarm.common;
+package com.fingers.six.elarm.utils;
 
+import com.fingers.six.elarm.common.QuestionItem;
+import com.fingers.six.elarm.common.QuestionList;
+import com.fingers.six.elarm.common.Word;
 import com.fingers.six.elarm.utils.RandomUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TestManager {
+public class TestUtils {
 
     public static int grade(QuestionItem[] qq) {
         int cnt = 0;

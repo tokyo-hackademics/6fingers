@@ -1,10 +1,12 @@
-package com.fingers.six.elarm.common;
+package com.fingers.six.elarm.dbHandlers;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.fingers.six.elarm.common.HistoryItem;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class ProgressTracker extends SQLiteOpenHelper {
+public class HistoryDbHandler extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "TRACKING_DB";
     // All Static variables
@@ -30,7 +32,7 @@ public class ProgressTracker extends SQLiteOpenHelper {
     private static final String KEY_LIST_NAME = "LIST_NAME";
     private static final String KEY_SCORE = "SCORE";
 
-    public ProgressTracker(Context context) {
+    public HistoryDbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
