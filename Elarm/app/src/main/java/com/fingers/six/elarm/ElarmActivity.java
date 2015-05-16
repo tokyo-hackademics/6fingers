@@ -30,6 +30,7 @@ public class ElarmActivity extends ActionBarActivity {
     // Fragments
     ElarmActivityFragment elarm;
     SettingsFragment settings;
+    AlarmFragment      alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +65,9 @@ public class ElarmActivity extends ActionBarActivity {
         fragmentManager = this.getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
-        elarm = (ElarmActivityFragment)fragmentManager.findFragmentByTag("elarm_main");
+        elarm    = (ElarmActivityFragment)fragmentManager.findFragmentByTag("elarm_main");
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
+        alarm    = (AlarmFragment)fragmentManager.findFragmentByTag("alarm");
 
 
         if(elarm == null) {
@@ -78,7 +80,12 @@ public class ElarmActivity extends ActionBarActivity {
             fragmentTransaction.add(R.id.mainContent,settings,"settings");
         }
 
-        fragmentTransaction.detach(settings);
+        if(alarm == null) {
+            alarm = new AlarmFragment();
+            fragmentTransaction.add(R.id.mainContent,alarm,"alarm");
+        }
+
+      //  fragmentTransaction.detach(settings);
         fragmentTransaction.commit();
     }
     /**
@@ -97,14 +104,22 @@ public class ElarmActivity extends ActionBarActivity {
         if("Home".equalsIgnoreCase(title)) {
             // Detach all presented fragments
             fragmentTransaction.detach(settings);
+            fragmentTransaction.detach(alarm);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
         }
         else if("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(alarm);
             //Attach settings
             fragmentTransaction.attach(settings);
+        }
+        if(title.equals("Alarm")) {
+            fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(settings);
+
+            fragmentTransaction.attach(alarm);
         }
 
         fragmentTransaction.commit();
