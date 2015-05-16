@@ -25,6 +25,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_elarm);
 
         mnavigationItems.add(new NavigationItem("Home", R.mipmap.ic_launcher));
@@ -66,8 +67,13 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
     /*
 *   Called when a particular item from the navigation drawer
 *   is selected.
-*   */
+*  */
     private void selectItemFromDrawer(int position) {
+        mDrawerList.setItemChecked(position, true);
+        setTitle(mnavigationItems.get(position).mTitle);
+
+        // Close the drawer
+        mDrawerLayout.closeDrawer(mDrawerPane);
         Toast.makeText(getApplicationContext(), mnavigationItems.get(position).mTitle, Toast.LENGTH_SHORT).show();
     }
 
