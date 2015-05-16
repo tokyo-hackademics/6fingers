@@ -214,6 +214,6 @@ public class ElarmActivity extends ActionBarActivity {
 
         editor.commit();
 
-        Log.d("MainActivity", "Now unlock_or_not = " + sharedPreferences.getInt("time_mode",-1));
+        Log.d("MainActivity", "Now unlock_or_not = " + sharedPreferences.getInt("unlock_or_not",-1));
     }
 }
