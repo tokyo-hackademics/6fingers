@@ -21,7 +21,12 @@ import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 import java.util.ArrayList;
 
 
-public class ElarmActivity extends ActionBarActivity implements HomeFragment.Callbacks, HomeFragment.OnFragmentInteractionListener, QuestionListDetailFragment.OnFragmentInteractionListener {
+public class ElarmActivity
+        extends ActionBarActivity
+        implements HomeFragment.Callbacks,
+        HomeFragment.OnFragmentInteractionListener,
+        QuestionListDetailFragment.OnFragmentInteractionListener,
+        HistoryFragment.OnFragmentInteractionListener {
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
@@ -35,6 +40,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.Cal
     // Fragments
     HomeFragment elarm;
     SettingsFragment settings;
+    HistoryFragment history;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +91,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.Cal
 
         elarm = (HomeFragment) fragmentManager.findFragmentByTag("home");
         settings = (SettingsFragment) fragmentManager.findFragmentByTag("settings");
+        history = (HistoryFragment) fragmentManager.findFragmentByTag("history");
 
 
         if (elarm == null) {
@@ -97,7 +104,13 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.Cal
             fragmentTransaction.add(R.id.mainContent, settings, "settings");
         }
 
+        if (history == null) {
+            history = new HistoryFragment();
+            fragmentTransaction.add(R.id.mainContent, history, "history");
+        }
+
         fragmentTransaction.detach(settings);
+        fragmentTransaction.detach(history);
         fragmentTransaction.commit();
     }
 
@@ -124,6 +137,11 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.Cal
             fragmentTransaction.detach(elarm);
             //Attach settings
             fragmentTransaction.attach(settings);
+        } else if ("History".equalsIgnoreCase(title)) {
+//            fragmentTransaction.detach(elarm);
+//            fragmentTransaction.detach(settings);
+
+            fragmentTransaction.replace(R.id.mainContent, history);
         }
 
         fragmentTransaction.commit();

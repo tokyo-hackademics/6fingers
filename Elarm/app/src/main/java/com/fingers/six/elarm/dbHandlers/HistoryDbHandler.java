@@ -109,7 +109,7 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
         List<HistoryItem> historyItems = new ArrayList<>();
         // Select Query
         String selectQuery = "SELECT * FROM " + TABLE_NAME
-                + " WHERE (" + KEY_LIST_NAME + " = '" + name + "' AND " + KEY_DATE + " = " + date + ")";
+                + " WHERE (" + KEY_LIST_NAME + " = '" + name + "' AND " + KEY_DATE + " > " + date + ")";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
