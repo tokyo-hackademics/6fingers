@@ -1,4 +1,4 @@
-package com.fingers.six.elarm;
+package com.fingers.six.elarm.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.fingers.six.elarm.R;
 
 /**
  * Created by PhanVanTrung on 2015/05/16.

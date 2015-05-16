@@ -14,6 +14,10 @@ import android.widget.RelativeLayout;
 import android.widget.AdapterView;
 import android.view.View;
 
+import com.fingers.six.elarm.fragments.AlarmFragment;
+import com.fingers.six.elarm.fragments.HomeFragment;
+import com.fingers.six.elarm.fragments.QuestionFragment;
+import com.fingers.six.elarm.fragments.SettingsFragment;
 import com.fingers.six.elarm.sidebar.NavigationItem;
 import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 import java.util.ArrayList;
@@ -32,7 +36,8 @@ public class ElarmActivity extends ActionBarActivity {
     // Fragments
     HomeFragment elarm;
     SettingsFragment settings;
-    AlarmFragment      alarm;
+    AlarmFragment alarm;
+    QuestionFragment question;
 
     // Manage Preference data by a key-value database
     SharedPreferences sharedPreferences;
@@ -77,6 +82,7 @@ public class ElarmActivity extends ActionBarActivity {
 
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
         alarm    = (AlarmFragment)fragmentManager.findFragmentByTag("alarm");
+        question = (QuestionFragment)fragmentManager.findFragmentByTag("question");
 
 
         if(elarm == null) {
@@ -94,8 +100,14 @@ public class ElarmActivity extends ActionBarActivity {
             fragmentTransaction.add(R.id.mainContent,alarm,"alarm");
         }
 
+        if(question == null) {
+            question = new QuestionFragment();
+            fragmentTransaction.add(R.id.mainContent,question,"question");
+        }
+
         fragmentTransaction.detach(settings);
         fragmentTransaction.detach(alarm);
+        fragmentTransaction.detach(question);
         fragmentTransaction.commit();
 
         // Preference manager
@@ -141,7 +153,7 @@ public class ElarmActivity extends ActionBarActivity {
         if(title.equals("Alarm")) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
-
+            // Attach an alarm view
             fragmentTransaction.attach(alarm);
         }
 

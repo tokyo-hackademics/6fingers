@@ -1,4 +1,4 @@
-package com.fingers.six.elarm;
+package com.fingers.six.elarm.common;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
