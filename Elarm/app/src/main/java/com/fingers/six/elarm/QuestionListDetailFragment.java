@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 
 /**
@@ -26,6 +27,15 @@ public class QuestionListDetailFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    /**
+     * The fragment argument representing the item ID that this fragment
+     * represents.
+     */
+    public static final String ARG_ITEM_ID = "question_list_name";
+
+    // dummy string
+    private String mItem;
 
     private OnFragmentInteractionListener mListener;
 
@@ -57,6 +67,14 @@ public class QuestionListDetailFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+
+
+            if (getArguments().containsKey(ARG_ITEM_ID)) {
+                // Load the dummy content specified by the fragment
+                // arguments. In a real-world scenario, use a Loader
+                // to load content from a content provider.
+                mItem = getArguments().getString(ARG_ITEM_ID);
+            }
         }
     }
 
@@ -64,7 +82,13 @@ public class QuestionListDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_question_list_detail, container, false);
+        View v = inflater.inflate(R.layout.fragment_question_list_detail, container, false);
+
+        if (mItem != null) {
+            ((TextView) v.findViewById(R.id.txtTmp)).setText(mItem);
+        }
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,7 +120,7 @@ public class QuestionListDetailFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

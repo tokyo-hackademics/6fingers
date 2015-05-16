@@ -1,5 +1,6 @@
 package com.fingers.six.elarm;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
@@ -16,14 +17,16 @@ import android.widget.Toast;
 
 import com.fingers.six.elarm.sidebar.NavigationItem;
 import com.fingers.six.elarm.sidebar.DrawerListAdapter;
+
 import java.util.ArrayList;
 
 
-public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnFragmentInteractionListener, QuestionListDetailFragment.OnFragmentInteractionListener {
+public class ElarmActivity extends ActionBarActivity implements HomeFragment.Callbacks, HomeFragment.OnFragmentInteractionListener, QuestionListDetailFragment.OnFragmentInteractionListener {
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
     ListView mDrawerList;
+
 
     // Manage fragments
     FragmentManager fragmentManager;
@@ -40,9 +43,10 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_elarm);
 
+
         mnavigationItems.add(new NavigationItem("Home", R.mipmap.ic_launcher));
-        mnavigationItems.add(new NavigationItem("History",R.mipmap.ic_launcher));
-        mnavigationItems.add(new NavigationItem("Alarm",R.mipmap.ic_launcher));
+        mnavigationItems.add(new NavigationItem("History", R.mipmap.ic_launcher));
+        mnavigationItems.add(new NavigationItem("Alarm", R.mipmap.ic_launcher));
         mnavigationItems.add(new NavigationItem("Setting", R.mipmap.ic_launcher));
         mnavigationItems.add(new NavigationItem("Help", R.mipmap.ic_launcher));
 
@@ -62,7 +66,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
                 selectItemFromDrawer(position);
 
                 // Test show home fragment:
-                Fragment fragment= new HomeFragment();
+                Fragment fragment = new HomeFragment();
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction()
@@ -71,7 +75,7 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
 
                 mDrawerList.setItemChecked(position, true);
                 setTitle("Home");
- //               mDrawerLayout.closeDrawer(mDrawerList);
+                //               mDrawerLayout.closeDrawer(mDrawerList);
 //                mDrawerLayout.closeDrawer(mDrawerList);
             }
         });
@@ -80,33 +84,34 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
         fragmentManager = this.getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
-        elarm = (HomeFragment)fragmentManager.findFragmentByTag("home");
-        settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
-        fragQuestLstDetail = (QuestionListDetailFragment)fragmentManager.findFragmentByTag("questListDetail");
+        elarm = (HomeFragment) fragmentManager.findFragmentByTag("home");
+        settings = (SettingsFragment) fragmentManager.findFragmentByTag("settings");
+        fragQuestLstDetail = (QuestionListDetailFragment) fragmentManager.findFragmentByTag("questListDetail");
 
 
-        if(elarm == null) {
+        if (elarm == null) {
             elarm = new HomeFragment();
-            fragmentTransaction.add(R.id.mainContent,elarm,"home");
+            fragmentTransaction.add(R.id.mainContent, elarm, "home");
         }
 
-        if(settings == null) {
+        if (settings == null) {
             settings = new SettingsFragment();
-            fragmentTransaction.add(R.id.mainContent,settings,"settings");
+            fragmentTransaction.add(R.id.mainContent, settings, "settings");
         }
 
-        if(fragQuestLstDetail == null){
+        if (fragQuestLstDetail == null) {
             fragQuestLstDetail = new QuestionListDetailFragment();
-            fragmentTransaction.add(R.id.mainContent,fragQuestLstDetail,"questListDetail");
+            fragmentTransaction.add(R.id.mainContent, fragQuestLstDetail, "questListDetail");
         }
 
         fragmentTransaction.detach(settings);
         fragmentTransaction.commit();
     }
+
     /**
-*   Called when a particular item from the navigation drawer
-*   is selected.
-*  */
+     * Called when a particular item from the navigation drawer
+     * is selected.
+     */
     private void selectItemFromDrawer(int position) {
         mDrawerList.setItemChecked(position, true);
 
@@ -116,14 +121,13 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
 
         fragmentTransaction = fragmentManager.beginTransaction();
         // Event actions
-        if("Home".equalsIgnoreCase(title)) {
+        if ("Home".equalsIgnoreCase(title)) {
             // Detach all presented fragments
             fragmentTransaction.detach(settings);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
-        }
-        else if("Setting".equalsIgnoreCase(title)) {
+        } else if ("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
             //Attach settings
             fragmentTransaction.attach(settings);
@@ -139,6 +143,15 @@ public class ElarmActivity extends ActionBarActivity implements HomeFragment.OnF
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onItemSelected(String id) {
+        // In single-pane mode, simply start the detail activity
+        // for the selected item ID.
+        Intent detailIntent = new Intent(this, QuestionListDetailActivity.class);
+        detailIntent.putExtra(QuestionListDetailFragment.ARG_ITEM_ID, id);
+        startActivity(detailIntent);
     }
 
 //    @Override

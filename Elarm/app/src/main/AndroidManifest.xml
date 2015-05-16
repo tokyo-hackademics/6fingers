@@ -27,6 +27,10 @@
             </intent-filter>
         </receiver>
 
+        <activity
+            android:name=".QuestionListDetailActivity"
+            android:label="@string/title_activity_question_list_detail" >
+        </activity>
     </application>
 
 </manifest>
