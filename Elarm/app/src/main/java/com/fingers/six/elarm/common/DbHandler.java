@@ -1,4 +1,4 @@
-package com.fingers.six.elarm.com.fingers.six.utilities;
+package com.fingers.six.elarm.common;
 
 import android.content.ContentValues;
 import android.content.Context;

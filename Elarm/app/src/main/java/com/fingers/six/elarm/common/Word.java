@@ -1,4 +1,4 @@
-package com.fingers.six.elarm.com.fingers.six.utilities;
+package com.fingers.six.elarm.common;
 
 /**
  * Created by Nghia on 5/16/2015.
