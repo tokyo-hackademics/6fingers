@@ -9,6 +9,13 @@ public class Word implements Comparable<Word> {
     private String _eng;
     private int _score;
 
+    public Word() {
+        set_id(0);
+        set_jap("");
+        set_eng("");
+        set_score(0);
+    }
+
     public Word(int id, String jap, String eng, int score) {
         set_id(id);
         set_jap(jap);
