@@ -2,20 +2,14 @@ package com.fingers.six.elarm.common;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 import java.util.Set;
 
-/**
- * Created by Nghia on 5/16/2015.
- */
 public class TestManager {
 
     public static int grade(QuestionItem[] qq) {
         int cnt = 0;
-        for (int i = 0; i < qq.length; ++i) {
-            cnt += qq[i].isGoodAnswer() ? 1 : 0;
+        for (QuestionItem q : qq) {
+            cnt += q.isGoodAnswer() ? 1 : 0;
         }
         return cnt;
     }
@@ -32,7 +26,7 @@ public class TestManager {
             String[] ans = new String[4];
             int r = (int)(Math.random() * 4);
             ans[r] = isEngToJap ? qq[i].get_word().get_jap() : qq[i].get_word().get_eng();
-            Set<String> s = new HashSet<String>();
+            Set<String> s = new HashSet<>();
             s.add(ans[r]);
             for (int j = 0; j < 4; ++j) {
                 if (j == r) continue;
