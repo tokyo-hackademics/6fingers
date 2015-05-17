@@ -18,7 +18,6 @@ import android.widget.RelativeLayout;
 import android.widget.AdapterView;
 import android.view.View;
 
-import com.fingers.six.elarm.common.UserPresentBroadcastReceiver;
 import com.fingers.six.elarm.fragments.AlarmFragment;
 import com.fingers.six.elarm.fragments.HomeFragment;
 import com.fingers.six.elarm.fragments.QuestionFragment;
@@ -136,8 +135,10 @@ public class ElarmActivity extends ActionBarActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 String action = intent.getAction();
+                // Detect screen unlocking events
                 if(Intent.ACTION_USER_PRESENT.equalsIgnoreCase(action)) {
-                    fragmentTransaction = fragmentManager.beginTransaction();
+                    Log.d("MainActivity", "Screen is unlocked");
+                    fragmentTransaction = ((ElarmActivity)context).getSupportFragmentManager().beginTransaction();
 
                     fragmentTransaction.detach(elarm);
                     fragmentTransaction.detach(settings);
