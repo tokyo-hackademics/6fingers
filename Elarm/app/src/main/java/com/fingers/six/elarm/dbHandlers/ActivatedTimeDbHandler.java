@@ -57,7 +57,7 @@ public class ActivatedTimeDbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, new String[]{KEY_ID,
-                        KEY_TIME}, KEY_ID + "=?",
+                        KEY_TIME}, KEY_ID + " = ?",
                 new String[]{"1"}, null, null, null, null);
         cursor.close();
         cursor.moveToFirst();
