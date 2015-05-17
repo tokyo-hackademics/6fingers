@@ -1,12 +1,16 @@
 package com.fingers.six.elarm;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.RadioButton;
 
 
 /**
@@ -19,6 +23,9 @@ public class SettingsFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private SharedPreferences sharedPreferences;
+    private View mView;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -53,13 +60,44 @@ public class SettingsFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        sharedPreferences = getActivity().getSharedPreferences("Elarm", Context.MODE_PRIVATE);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false);
+        mView =  inflater.inflate(R.layout.fragment_settings, container, false);
+        RadioButton time_mode_1 = (RadioButton)mView.findViewById(R.id.setting_time_mode_1);
+        RadioButton time_mode_2 = (RadioButton)mView.findViewById(R.id.setting_time_mode_2);
+        RadioButton time_mode_3 = (RadioButton)mView.findViewById(R.id.setting_time_mode_3);
+
+        CheckBox unlock_mode = (CheckBox)mView.findViewById(R.id.setting_unlock_alarm1);
+
+        int time_mode = sharedPreferences.getInt("time_mode",-1);
+        int unlock_or_not = sharedPreferences.getInt("unlock_or_not",-1);
+
+        // Update the view to match the preferences
+        switch(time_mode) {
+            case 0:
+                time_mode_1.toggle();
+                break;
+
+            case 1:
+                time_mode_2.toggle();
+                break;
+
+            default:
+                time_mode_3.toggle();
+                break;
+        }
+
+        if((unlock_mode.isChecked() && unlock_or_not == 1) ||
+                (!unlock_mode.isChecked() && unlock_or_not == 0)) {
+            unlock_mode.toggle();
+        }
+        return mView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
