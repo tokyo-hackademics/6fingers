@@ -49,6 +49,7 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        generateMockData();
     }
 
     private void generateMockData() {
@@ -131,9 +132,8 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
         // Select All Query
         String selectQuery = "SELECT * FROM " + TABLE_NAME + " ORDER BY " + KEY_DATE + " DESC";
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        cursor.close();
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -141,6 +141,7 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
                 list.add(getHistoryItemFromCursor(cursor));
             } while (cursor.moveToNext());
         }
+        cursor.close();
 
         // return word list
         return list;
@@ -157,7 +158,6 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
-        cursor.close();
 
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
@@ -165,7 +165,7 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
                 historyItems.add(getHistoryItemFromCursor(cursor));
             } while (cursor.moveToNext());
         }
-
+        cursor.close();
         // return word list
         return historyItems;
     }

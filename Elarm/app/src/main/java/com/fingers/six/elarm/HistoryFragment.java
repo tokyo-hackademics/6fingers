@@ -8,11 +8,18 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.fingers.six.elarm.adapters.HistoryListAdapter;
+import com.fingers.six.elarm.common.HistoryItem;
+import com.fingers.six.elarm.dbHandlers.HistoryDbHandler;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lecho.lib.hellocharts.model.Axis;
+import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.ChartData;
 import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.Line;
@@ -83,21 +90,53 @@ public class HistoryFragment extends Fragment {
         lstHistory = (ListView) v.findViewById(R.id.lstHistory);
         chart = (LineChartView) v.findViewById(R.id.chart);
 
-        List<PointValue> values = new ArrayList<PointValue>();
-        values.add(new PointValue(0, 2));
-        values.add(new PointValue(1, 4));
-        values.add(new PointValue(2, 3));
-        values.add(new PointValue(3, 4));
+        lstHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<HistoryItem> chartList = (ArrayList<HistoryItem>) (new HistoryDbHandler(getActivity()))
+                        .searchByDateAndName(0, ((HistoryItem) lstHistory.getAdapter().getItem(position)).get_questionName());
+                List<PointValue> values = new ArrayList<PointValue>();
+                for (int i = 0; i < chartList.size(); i++) {
+                    values.add(new PointValue(i, (float) chartList.get(i).get_score()));
+                }
+                //In most cased you can call data model methods in builder-pattern-like manner.
+                Line line = new Line(values).setColor(Color.BLUE).setCubic(true);
+                List<Line> lines = new ArrayList<Line>();
+                lines.add(line);
 
-        //In most cased you can call data model methods in builder-pattern-like manner.
-        Line line = new Line(values).setColor(Color.BLUE).setCubic(true);
-        List<Line> lines = new ArrayList<Line>();
-        lines.add(line);
+//                ArrayList<AxisValue> xAVal = new ArrayList<AxisValue>();
+//                for(int i = 0;i< chartList.size();i++){
+//                    xAVal.add(i, new AxisValue())
+//                }
+//                Axis xA = new Axis(new ArrayList<AxisValue>());
 
-        LineChartData data = new LineChartData();
-        data.setLines(lines);
+                LineChartData data = new LineChartData();
+                data.setLines(lines);
 
-        chart.setLineChartData(data);
+                chart.setLineChartData(data);
+            }
+
+
+
+        });
+
+        lstHistory.setAdapter(new HistoryListAdapter(this.getActivity(), ""));
+
+//        List<PointValue> values = new ArrayList<PointValue>();
+//        values.add(new PointValue(0, 2));
+//        values.add(new PointValue(1, 4));
+//        values.add(new PointValue(2, 3));
+//        values.add(new PointValue(3, 4));
+//
+//        //In most cased you can call data model methods in builder-pattern-like manner.
+//        Line line = new Line(values).setColor(Color.BLUE).setCubic(true);
+//        List<Line> lines = new ArrayList<Line>();
+//        lines.add(line);
+//
+//        LineChartData data = new LineChartData();
+//        data.setLines(lines);
+//
+//        chart.setLineChartData(data);
 
         return v;
     }
