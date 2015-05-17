@@ -1,4 +1,4 @@
-package com.fingers.six.elarm;
+package com.fingers.six.elarm.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -12,7 +12,13 @@ import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.TimePicker;
 
+import com.fingers.six.elarm.ElarmActivity;
+import com.fingers.six.elarm.R;
 import com.fingers.six.elarm.common.AlarmHandler;
+
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by PhanVanTrung on 2015/05/17.
@@ -32,12 +38,19 @@ public class AlarmSettingFragment extends Activity {
         Button btnsave = (Button)findViewById(R.id.btnSave);
         TimePicker timePicker = (TimePicker)findViewById(R.id.timePicker);
 
+        // Default values
+        Date date = new Date();   // given date
+        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+        mhour = calendar.get(Calendar.HOUR);
+        mminute = calendar.get(Calendar.MINUTE);
+        time_status = (mhour < 12) ? "AM" : "PM";
+
         timePicker.setOnTimeChangedListener((new TimePicker.OnTimeChangedListener() {
             @Override
             public void onTimeChanged(TimePicker view, int hourOfDay, int minute) {
                 mminute = minute;
                 mhour = hourOfDay;
-                time_status = (hourOfDay < 12) ? "AM" : "PM";
+                time_status = (mhour < 12) ? "AM" : "PM";
                 Log.d("LOG","Alarm Time is "+Integer.toString(mhour)+":"+Integer.toString(mminute)+time_status);
             }
         }));
@@ -47,9 +60,7 @@ public class AlarmSettingFragment extends Activity {
                 String  time =  Integer.toString(mhour)+":"+Integer.toString(mminute);
                 (new AlarmHandler(getApplicationContext(),"alarm_db")).addAlarmTime(time, time_status);
                 Log.d("SAVE", "Saved alarm time is " + Integer.toString(mhour) + ":" + Integer.toString(mminute) + time_status);
-                Intent intent = new Intent(getApplication(),ElarmActivity.class);
-                startActivity(intent);
-
+                finish();
             }
         });
     }
