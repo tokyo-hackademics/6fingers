@@ -37,6 +37,12 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         // Create tables again
         onCreate(db);
         getWritableDatabase().insert(TABLE_NAME, null, values);
+
+        values = getContentValues("Toefl");
+        getWritableDatabase().insert(TABLE_NAME, null, values);
+
+        values = getContentValues("Toeic");
+        getWritableDatabase().insert(TABLE_NAME, null, values);
     }
 
     // Creating Tables
@@ -68,6 +74,7 @@ public class MasterDbHandler extends SQLiteOpenHelper {
 
         // new table
         //(new WordListDbHandler())
+        db.close();
 
     }
 
