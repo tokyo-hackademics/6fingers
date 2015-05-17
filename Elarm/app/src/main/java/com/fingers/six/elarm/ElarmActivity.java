@@ -130,18 +130,22 @@ public class ElarmActivity
         if ("Home".equalsIgnoreCase(title)) {
             // Detach all presented fragments
             fragmentTransaction.detach(settings);
+            fragmentTransaction.detach(history);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
         } else if ("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(history);
             //Attach settings
             fragmentTransaction.attach(settings);
-        } else if ("History".equalsIgnoreCase(title)) {
-//            fragmentTransaction.detach(elarm);
-//            fragmentTransaction.detach(settings);
 
-            fragmentTransaction.replace(R.id.mainContent, history);
+        } else if ("History".equalsIgnoreCase(title)) {
+            fragmentTransaction.detach(elarm);
+            fragmentTransaction.detach(settings);
+
+            fragmentTransaction.attach(history);
+//            fragmentTransaction.replace(R.id.mainContent, history);
         }
 
         fragmentTransaction.commit();
@@ -159,7 +163,7 @@ public class ElarmActivity
     @Override
     public void onItemSelected(String id) {
         // In single-pane mode, simply start the detail activity
-        // for the selected item ID.
+        // for the
         Intent detailIntent = new Intent(this, QuestionListDetailActivity.class);
         detailIntent.putExtra(QuestionListDetailFragment.ARG_ITEM_ID, id);
         startActivity(detailIntent);
