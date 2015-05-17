@@ -19,12 +19,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".fragments.AlarmSettingFragment"
-                  android:label="alarmsetting"></activity>
-
+        <activity
+            android:name=".fragments.AlarmSettingFragment"
+            android:label="alarmsetting" />
         <activity
             android:name=".QuestionListDetailActivity"
             android:label="@string/title_activity_question_list_detail" >
+        </activity>
+        <activity
+            android:name=".QuestionActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_question"
+            android:theme="@style/FullscreenTheme" >
         </activity>
     </application>
 

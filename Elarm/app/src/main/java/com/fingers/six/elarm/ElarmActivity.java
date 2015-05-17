@@ -26,7 +26,6 @@ import com.fingers.six.elarm.common.SwipeGestureFilter.SwipeGestureListener;
 import com.fingers.six.elarm.fragments.AlarmFragment;
 import com.fingers.six.elarm.fragments.HistoryFragment;
 import com.fingers.six.elarm.fragments.HomeFragment;
-import com.fingers.six.elarm.fragments.QuestionFragment;
 import com.fingers.six.elarm.fragments.QuestionListDetailFragment;
 import com.fingers.six.elarm.fragments.SettingsFragment;
 import com.fingers.six.elarm.sidebar.NavigationItem;
@@ -56,7 +55,6 @@ public class ElarmActivity
     SettingsFragment settings;
     HistoryFragment history;
     AlarmFragment alarm;
-    QuestionFragment question;
 
     // Manage Preference data by a key-value database
     SharedPreferences sharedPreferences;
@@ -105,7 +103,6 @@ public class ElarmActivity
         settings = (SettingsFragment) fragmentManager.findFragmentByTag("settings");
         history = (HistoryFragment) fragmentManager.findFragmentByTag("history");
         alarm = (AlarmFragment) fragmentManager.findFragmentByTag("alarm");
-        question = (QuestionFragment)fragmentManager.findFragmentByTag("question");
 
         if (elarm == null) {
             elarm = new HomeFragment();
@@ -129,17 +126,11 @@ public class ElarmActivity
             fragmentTransaction.add(R.id.mainContent, alarm, "alarm");
         }
 
-        if(question == null) {
-            question = new QuestionFragment();
-            fragmentTransaction.add(R.id.mainContent,question,"question");
-        }
-
         fragmentTransaction.detach(settings);
 
         fragmentTransaction.detach(history);
 
         fragmentTransaction.detach(alarm);
-        fragmentTransaction.detach(question);
 
         fragmentTransaction.commit();
 
@@ -164,14 +155,8 @@ public class ElarmActivity
                 // Detect screen unlocking events
                 if(Intent.ACTION_USER_PRESENT.equalsIgnoreCase(action)) {
                     Log.d("MainActivity", "Screen is unlocked");
-                    fragmentTransaction = ((ElarmActivity)context).getSupportFragmentManager().beginTransaction();
-
-                    fragmentTransaction.detach(elarm);
-                    fragmentTransaction.detach(settings);
-                    fragmentTransaction.detach(alarm);
-                    fragmentTransaction.attach(question);
-
-                    fragmentTransaction.commitAllowingStateLoss();
+                    Intent i = new Intent(getApplication(),QuestionActivity.class);
+                    startActivity(i);
                 }
             }
         };
@@ -202,7 +187,6 @@ public class ElarmActivity
             fragmentTransaction.detach(history);
 
             fragmentTransaction.detach(alarm);
-            fragmentTransaction.detach(question);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
@@ -212,7 +196,6 @@ public class ElarmActivity
             fragmentTransaction.detach(history);
 
             fragmentTransaction.detach(alarm);
-            fragmentTransaction.detach(question);
             //Attach settings
             fragmentTransaction.attach(settings);
 
@@ -228,7 +211,6 @@ public class ElarmActivity
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
             fragmentTransaction.detach(history);
-            fragmentTransaction.detach(question);
             // Attach an alarm view
             fragmentTransaction.attach(alarm);
         }
