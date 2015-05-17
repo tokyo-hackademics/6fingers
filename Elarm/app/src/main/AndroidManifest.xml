@@ -19,16 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AlarmSettingFragment"
+        <activity android:name=".fragments.AlarmSettingFragment"
                   android:label="alarmsetting"></activity>
-
-        <receiver android:name=".UserPresentBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
-            </intent-filter>
-        </receiver>
-
+        
         <activity
             android:name=".QuestionListDetailActivity"
             android:label="@string/title_activity_question_list_detail" >

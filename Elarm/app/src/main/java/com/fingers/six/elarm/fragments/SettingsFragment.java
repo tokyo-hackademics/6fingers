@@ -1,9 +1,8 @@
-package com.fingers.six.elarm;
+package com.fingers.six.elarm.fragments;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -11,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.RadioButton;
+
+import com.fingers.six.elarm.R;
 
 
 /**
@@ -98,10 +99,6 @@ public class SettingsFragment extends Fragment {
             unlock_mode.toggle();
         }
         return mView;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
     }
 
     @Override
