@@ -6,7 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.fingers.six.elarm.common.Data;
 import com.fingers.six.elarm.common.Word;
+import com.fingers.six.elarm.utils.DateTimeUtils;
+
+import org.joda.time.LocalDateTime;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -42,7 +46,7 @@ public class WordListDbHandler extends SQLiteOpenHelper {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        generateSampleData();
     }
 
     // Creating Tables
@@ -65,6 +69,28 @@ public class WordListDbHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    private void generateSampleData() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS '" + _tableName + "'");
+
+        // Create tables again
+        onCreate(db);
+        for (String str : Data.questionData) {
+            Word w = new Word();
+            w.set_jap(str.substring(0, 1));
+            for (int i = 1; i < str.length(); ++i) {
+                if (Character.toLowerCase(str.charAt(i)) <= 'z' && Character.toLowerCase(str.charAt(i)) >= 'a') {
+                    w.set_eng(str.substring(i));
+                    break;
+                }
+            }
+            w.set_score(0);
+            w.set_lastAsked(DateTimeUtils.convertToSeconds(LocalDateTime.now()));
+
+            addWord(w);
+        }
+    }
+
     // Adding new word
     public void addWord(Word word) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -73,7 +99,6 @@ public class WordListDbHandler extends SQLiteOpenHelper {
 
         // Inserting Row
         db.insert("'" + _tableName + "'", null, values);
-        db.close(); // Closing database connection
     }
 
     // Getting single word
@@ -151,7 +176,6 @@ public class WordListDbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete("'" + _tableName + "'", KEY_ID + "= " + word.get_id(),
                 null);
-        db.close();
     }
 
 //    public int getWordsCount() {

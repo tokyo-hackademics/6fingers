@@ -21,7 +21,7 @@
         </activity>
         <activity android:name=".fragments.AlarmSettingFragment"
                   android:label="alarmsetting"></activity>
-        
+
         <activity
             android:name=".QuestionListDetailActivity"
             android:label="@string/title_activity_question_list_detail" >
