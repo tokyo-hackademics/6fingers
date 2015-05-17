@@ -1,15 +1,16 @@
 package com.fingers.six.elarm;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.fingers.six.elarm.fragments.QuestionListDetailFragment;
 
-public class QuestionListDetailActivity extends ActionBarActivity implements QuestionListDetailFragment.OnFragmentInteractionListener{
+
+public class QuestionListDetailActivity extends ActionBarActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +77,4 @@ public class QuestionListDetailActivity extends ActionBarActivity implements Que
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
 }
