@@ -7,8 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.fingers.six.elarm.R;
+import com.fingers.six.elarm.common.QuestionItem;
+import com.fingers.six.elarm.common.QuestionList;
+import com.fingers.six.elarm.utils.TestUtils;
+
+import org.w3c.dom.Text;
 
 
 /**
@@ -66,6 +73,16 @@ public class QuestionFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_question, container, false);
+
+        Button mAns1 = (Button)mView.findViewById(R.id.answer_1);
+        Button mAns2 = (Button)mView.findViewById(R.id.answer_2);
+        Button mAns3 = (Button)mView.findViewById(R.id.answer_3);
+        Button mAns4 = (Button)mView.findViewById(R.id.answer_4);
+
+        TextView question_word = (TextView)mView.findViewById(R.id.txt_question_word);
+
+        // Generate question
+
         return mView;
     }
 
