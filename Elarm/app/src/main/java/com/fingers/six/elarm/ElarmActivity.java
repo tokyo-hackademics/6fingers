@@ -91,7 +91,6 @@ public class ElarmActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItemFromDrawer(position);
 
-
 //                // Test show home fragment:
 //                Fragment fragment = new HomeFragment();
 //
