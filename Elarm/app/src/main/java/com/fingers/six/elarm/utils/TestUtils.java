@@ -23,12 +23,12 @@ public class TestUtils {
         int threshold = RandomUtils.next(1000);
         QuestionItem ret;
         do {
-            ret = generateTest(isEngToJap, 1, questionList)[0];
+            ret = generateTest(isEngToJap, 1, questionList, 2)[0];
         } while (ret.get_word().get_score() >= threshold);
         return ret;
     }
 
-    public static QuestionItem[] generateTest(boolean isEngToJap, int numberOfQuestions, QuestionList questionList) {
+    public static QuestionItem[] generateTest(boolean isEngToJap, int numberOfQuestions, QuestionList questionList, int numOfAns) {
         Object[] allAns = getAllPossibleAns(isEngToJap, questionList).toArray();
         Object[] ww = questionList.get_wordList().toArray();
 
@@ -37,12 +37,12 @@ public class TestUtils {
             qq[i] = new QuestionItem();
             qq[i].set_word((Word) ww[RandomUtils.next(ww.length)]);
             qq[i].set_isEngToJap(isEngToJap);
-            String[] ans = new String[4];
-            int r = RandomUtils.next(4);
+            String[] ans = new String[numOfAns];
+            int r = RandomUtils.next(numOfAns);
             ans[r] = isEngToJap ? qq[i].get_word().get_jap() : qq[i].get_word().get_eng();
             Set<String> s = new HashSet<>();
             s.add(ans[r]);
-            for (int j = 0; j < 4; ++j) {
+            for (int j = 0; j < numOfAns; ++j) {
                 if (j == r) continue;
                 String t;
                 do {
