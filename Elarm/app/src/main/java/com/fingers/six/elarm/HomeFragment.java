@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+
     //Views
     private ListView lstQuestionList;
 
@@ -209,9 +210,9 @@ public class HomeFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
     }
 
     @Override
@@ -271,6 +272,7 @@ public class HomeFragment extends Fragment {
         }
 
         mCallbacks = (Callbacks) activity;
+
     }
 
     @Override
@@ -278,6 +280,7 @@ public class HomeFragment extends Fragment {
         super.onDetach();
         mListener = null;
         mCallbacks = sDummyCallbacks;
+
     }
 
     /**

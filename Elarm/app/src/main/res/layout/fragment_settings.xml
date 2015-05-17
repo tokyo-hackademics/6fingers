@@ -3,7 +3,80 @@
     android:layout_height="match_parent" tools:context="com.fingers.six.elarm.Settings">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_settings_fragment" />
+
+    <LinearLayout
+        android:id="@+id/settings_time_mode"
+        android:layout_margin="@dimen/abc_action_bar_subtitle_top_margin_material"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/setting_time_mode_title"
+            android:id="@+id/setting_time_mode_title"
+            android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material" />
+        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_time_mode_1"
+            android:id="@+id/setting_time_mode_1"
+            android:onClick="onRadioButtonClicked"
+            android:checked="false"
+            android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_time_mode_2"
+            android:id="@+id/setting_time_mode_2"
+            android:onClick="onRadioButtonClicked"
+            android:checked="false"
+            android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setting_time_mode_3"
+            android:id="@+id/setting_time_mode_3"
+            android:onClick="onRadioButtonClicked"
+            android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material"
+            android:checked="true" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:id="@+id/settings_unlock_alarm"
+            android:layout_margin="@dimen/abc_action_bar_subtitle_top_margin_material"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/setting_unlock_alarm"
+                android:id="@+id/setting_unlock_alarm_title"
+                android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material" />
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setting_unlock_1"
+                android:id="@+id/setting_unlock_alarm1"
+                android:onClick="onCheckboxClicked"
+                android:layout_margin="@dimen/abc_action_bar_icon_vertical_padding_material"
+                android:checked="true" />
+        </LinearLayout>
+
+    </LinearLayout>
 
 </FrameLayout>
