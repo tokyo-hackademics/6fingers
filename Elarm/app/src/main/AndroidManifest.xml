@@ -22,13 +22,6 @@
         <activity android:name=".AlarmSettingFragment"
                   android:label="alarmsetting"></activity>
 
-        <receiver android:name=".UserPresentBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT" />
-                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
-            </intent-filter>
-        </receiver>
-
     </application>
 
 </manifest>

@@ -12,4 +12,7 @@
     <string name="setting_unlock_alarm">Unlock Screen/ Alarm</string>
     <string name="setting_unlock_1">Show questions when screen is unlocked</string>
     <string name="action_example">action_example</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.fingers.six.elarm;
+package com.fingers.six.elarm.fragments;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -22,6 +22,8 @@ import java.io.FileDescriptor;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fingers.six.elarm.R;
 
 /**
  * Created by PhanVanTrung on 2015/05/16.

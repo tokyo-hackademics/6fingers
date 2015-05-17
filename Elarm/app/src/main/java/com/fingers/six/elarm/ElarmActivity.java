@@ -1,5 +1,9 @@
 package com.fingers.six.elarm;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +18,10 @@ import android.widget.RelativeLayout;
 import android.widget.AdapterView;
 import android.view.View;
 
+import com.fingers.six.elarm.fragments.AlarmFragment;
+import com.fingers.six.elarm.fragments.HomeFragment;
+import com.fingers.six.elarm.fragments.QuestionFragment;
+import com.fingers.six.elarm.fragments.SettingsFragment;
 import com.fingers.six.elarm.sidebar.NavigationItem;
 import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 import java.util.ArrayList;
@@ -32,11 +40,15 @@ public class ElarmActivity extends ActionBarActivity {
     // Fragments
     HomeFragment elarm;
     SettingsFragment settings;
-    AlarmFragment      alarm;
+    AlarmFragment alarm;
+    QuestionFragment question;
 
     // Manage Preference data by a key-value database
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+
+    // BroadCastReceiver to catch unlock screen event
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +90,7 @@ public class ElarmActivity extends ActionBarActivity {
 
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
         alarm    = (AlarmFragment)fragmentManager.findFragmentByTag("alarm");
+        question = (QuestionFragment)fragmentManager.findFragmentByTag("question");
 
         if(elarm == null) {
             elarm = new HomeFragment();
@@ -94,8 +107,14 @@ public class ElarmActivity extends ActionBarActivity {
             fragmentTransaction.add(R.id.mainContent,alarm,"alarm");
         }
 
+        if(question == null) {
+            question = new QuestionFragment();
+            fragmentTransaction.add(R.id.mainContent,question,"question");
+        }
+
         fragmentTransaction.detach(settings);
         fragmentTransaction.detach(alarm);
+        fragmentTransaction.detach(question);
 
         fragmentTransaction.commit();
 
@@ -111,6 +130,30 @@ public class ElarmActivity extends ActionBarActivity {
             editor.putInt("unlock_or_not",0); // show questions after unlock screen
         }
         editor.commit();
+
+        // BroadCastReceiver
+        broadcastReceiver =  new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                // Detect screen unlocking events
+                if(Intent.ACTION_USER_PRESENT.equalsIgnoreCase(action)) {
+                    Log.d("MainActivity", "Screen is unlocked");
+                    fragmentTransaction = ((ElarmActivity)context).getSupportFragmentManager().beginTransaction();
+
+                    fragmentTransaction.detach(elarm);
+                    fragmentTransaction.detach(settings);
+                    fragmentTransaction.detach(alarm);
+                    fragmentTransaction.attach(question);
+
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT);
+        registerReceiver(broadcastReceiver, intentFilter);
     }
     /**
     *   Called when a particular item from the navigation drawer
@@ -129,6 +172,7 @@ public class ElarmActivity extends ActionBarActivity {
             // Detach all presented fragments
             fragmentTransaction.detach(settings);
             fragmentTransaction.detach(alarm);
+            fragmentTransaction.detach(question);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
@@ -136,14 +180,15 @@ public class ElarmActivity extends ActionBarActivity {
         else if("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(alarm);
-
+            fragmentTransaction.detach(question);
             //Attach settings
             fragmentTransaction.attach(settings);
         }
         if("Alarm".equals(title)) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
-
+            fragmentTransaction.detach(question);
+            // Attach an alarm view
             fragmentTransaction.attach(alarm);
         }
 
@@ -191,29 +236,6 @@ public class ElarmActivity extends ActionBarActivity {
 
         Log.d("MainActivity", "Now time_mode = " + sharedPreferences.getInt("time_mode", -1));
     }
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_elarm, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-//}
 
     /**
      * To handle events when any checkboxes button in the app is clicked.
