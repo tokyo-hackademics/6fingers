@@ -122,6 +122,10 @@ public class QuestionActivity extends Activity {
         Button mAns4 = (Button)findViewById(R.id.answer_4);
 
         TextView question_word = (TextView)findViewById(R.id.txt_question_word);
+
+        // Generate a quick question
+
+
     }
 
     @Override
