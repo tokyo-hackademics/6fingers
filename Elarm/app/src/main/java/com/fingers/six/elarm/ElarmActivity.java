@@ -28,11 +28,9 @@ import java.util.ArrayList;
 
 public class ElarmActivity
         extends ActionBarActivity
-        implements HomeFragment.Callbacks
-//        HomeFragment.OnFragmentInteractionListener,
-//        QuestionListDetailFragment.OnFragmentInteractionListener,
-//        HistoryFragment.OnFragmentInteractionListener
-{
+        implements HomeFragment.Callbacks,
+        HomeFragment.OnFragmentInteractionListener,
+        QuestionListDetailFragment.OnFragmentInteractionListener {
 
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
@@ -48,7 +46,7 @@ public class ElarmActivity
     HomeFragment elarm;
     SettingsFragment settings;
     HistoryFragment history;
-    AlarmFragment      alarm;
+    AlarmFragment alarm;
 
     // Manage Preference data by a key-value database
     SharedPreferences sharedPreferences;
@@ -84,16 +82,16 @@ public class ElarmActivity
                 selectItemFromDrawer(position);
 
 
-                // Test show home fragment:
-                Fragment fragment = new HomeFragment();
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.mainContent, fragment)
-                        .commit();
-
-                mDrawerList.setItemChecked(position, true);
-                setTitle("Home");
+//                // Test show home fragment:
+//                Fragment fragment = new HomeFragment();
+//
+//                FragmentManager fragmentManager = getSupportFragmentManager();
+//                fragmentManager.beginTransaction()
+//                        .replace(R.id.mainContent, fragment)
+//                        .commit();
+//
+//                mDrawerList.setItemChecked(position, true);
+//                setTitle("Home");
                 //               mDrawerLayout.closeDrawer(mDrawerList);
 //                mDrawerLayout.closeDrawer(mDrawerList);
 
@@ -110,7 +108,7 @@ public class ElarmActivity
         elarm = (HomeFragment) fragmentManager.findFragmentByTag("home");
         settings = (SettingsFragment) fragmentManager.findFragmentByTag("settings");
         history = (HistoryFragment) fragmentManager.findFragmentByTag("history");
-        alarm    = (AlarmFragment)fragmentManager.findFragmentByTag("alarm");
+        alarm = (AlarmFragment) fragmentManager.findFragmentByTag("alarm");
 
 
         if (elarm == null) {
@@ -130,9 +128,9 @@ public class ElarmActivity
             fragmentTransaction.add(R.id.mainContent, history, "history");
         }
 
-        if(alarm == null) {
+        if (alarm == null) {
             alarm = new AlarmFragment();
-            fragmentTransaction.add(R.id.mainContent,alarm,"alarm");
+            fragmentTransaction.add(R.id.mainContent, alarm, "alarm");
         }
 
         fragmentTransaction.detach(settings);
@@ -148,17 +146,16 @@ public class ElarmActivity
 
         // For first time, we have to define default data
         editor = sharedPreferences.edit();
-        if(sharedPreferences.getInt("time_mode",-1) == -1) {
-            editor.putInt("time_mode",2); // no time limit
+        if (sharedPreferences.getInt("time_mode", -1) == -1) {
+            editor.putInt("time_mode", 2); // no time limit
         }
-        if(sharedPreferences.getInt("unlock_or_not",-1) == -1) {
-            editor.putInt("unlock_or_not",0); // show questions after unlock screen
+        if (sharedPreferences.getInt("unlock_or_not", -1) == -1) {
+            editor.putInt("unlock_or_not", 0); // show questions after unlock screen
         }
         editor.commit();
     }
 
     /**
-
      * Called when a particular item from the navigation drawer
      * is selected.
      */
@@ -200,7 +197,7 @@ public class ElarmActivity
             fragmentTransaction.attach(history);
 //            fragmentTransaction.replace(R.id.mainContent, history);
         }
-        if(title.equalsIgnoreCase("Alarm")) {
+        if (title.equalsIgnoreCase("Alarm")) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
             fragmentTransaction.detach(history);
@@ -216,6 +213,7 @@ public class ElarmActivity
 
     /**
      * To handle events when any radio button in the app is clicked.
+     *
      * @param view
      */
     public void onRadioButtonClicked(View view) {
@@ -223,23 +221,23 @@ public class ElarmActivity
         boolean checked = ((RadioButton) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.setting_time_mode_1:
                 if (checked) {
                     // Set time_mode to 0
-                    editor.putInt("time_mode",0);
+                    editor.putInt("time_mode", 0);
                 }
                 break;
 
             case R.id.setting_time_mode_2:
                 if (checked) {
-                    editor.putInt("time_mode",1);
+                    editor.putInt("time_mode", 1);
                 }
                 break;
 
             case R.id.setting_time_mode_3:
-                if(checked) {
-                    editor.putInt("time_mode",2);
+                if (checked) {
+                    editor.putInt("time_mode", 2);
                 }
                 break;
 
@@ -286,6 +284,7 @@ public class ElarmActivity
 
     /**
      * To handle events when any checkboxes button in the app is clicked.
+     *
      * @param view
      */
     public void onCheckboxClicked(View view) {
@@ -293,12 +292,12 @@ public class ElarmActivity
         boolean checked = ((CheckBox) view).isChecked();
 
         // Check which radio button was clicked
-        switch(view.getId()) {
+        switch (view.getId()) {
             case R.id.setting_unlock_alarm1:
                 if (checked) {
                     // Set time_mode to 0
-                    editor.putInt("unlock_or_not",0);
-                } else editor.putInt("unlock_or_not",1);
+                    editor.putInt("unlock_or_not", 0);
+                } else editor.putInt("unlock_or_not", 1);
                 break;
 
             default:
@@ -308,11 +307,11 @@ public class ElarmActivity
 
         editor.commit();
 
-        Log.d("MainActivity", "Now unlock_or_not = " + sharedPreferences.getInt("unlock_or_not",-1));
+        Log.d("MainActivity", "Now unlock_or_not = " + sharedPreferences.getInt("unlock_or_not", -1));
     }
 
-//    @Override
-//    public void onFragmentInteraction(Uri uri) {
-//
-//    }
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
 }
