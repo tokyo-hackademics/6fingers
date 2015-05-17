@@ -63,7 +63,7 @@ public class ElarmActivity extends ActionBarActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItemFromDrawer(position)
+                selectItemFromDrawer(position);
                 // The actions which are added below this line shouldn't be duplicated
                 // with the content in above selectItemFromDrawer(position);
 
@@ -78,7 +78,6 @@ public class ElarmActivity extends ActionBarActivity {
 
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
         alarm    = (AlarmFragment)fragmentManager.findFragmentByTag("alarm");
-
 
         if(elarm == null) {
             elarm = new HomeFragment();
@@ -97,6 +96,7 @@ public class ElarmActivity extends ActionBarActivity {
 
         fragmentTransaction.detach(settings);
         fragmentTransaction.detach(alarm);
+
         fragmentTransaction.commit();
 
         // Preference manager
@@ -136,6 +136,7 @@ public class ElarmActivity extends ActionBarActivity {
         else if("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(alarm);
+
             //Attach settings
             fragmentTransaction.attach(settings);
         }
@@ -191,7 +192,7 @@ public class ElarmActivity extends ActionBarActivity {
         Log.d("MainActivity", "Now time_mode = " + sharedPreferences.getInt("time_mode", -1));
     }
 
-<<<<<<< HEAD
+
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
@@ -212,8 +213,8 @@ public class ElarmActivity extends ActionBarActivity {
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
-}
-=======
+//}
+
     /**
      * To handle events when any checkboxes button in the app is clicked.
      * @param view
@@ -241,4 +242,3 @@ public class ElarmActivity extends ActionBarActivity {
         Log.d("MainActivity", "Now unlock_or_not = " + sharedPreferences.getInt("unlock_or_not",-1));
     }
 }
->>>>>>> 0a079b2e7b6614e50e1780487bd4d1244e219a83

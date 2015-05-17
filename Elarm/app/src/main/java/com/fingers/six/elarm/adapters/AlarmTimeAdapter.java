@@ -54,10 +54,10 @@ public class AlarmTimeAdapter extends BaseAdapter {
         }
 
         TextView titleView = (TextView) view.findViewById(R.id.title);
-       // Switch aSwitch = (Switch) view.findViewById(R.id.switch);
+        Switch aSwitch = (Switch) view.findViewById(R.id.mswitch);
 
         titleView.setText("               "+malarmTimes.get(position).getTime() + "            " + malarmTimes.get(position).getTime_status());
-       // aSwitch.setChecked(true);
+        aSwitch.setChecked(true);
         return view;
     }
 }

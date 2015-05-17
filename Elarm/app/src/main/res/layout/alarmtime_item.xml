@@ -22,6 +22,7 @@
     <Switch
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/mswitch"
         android:gravity="center_vertical|fill|end"
         android:layout_toRightOf="@+id/title"
         android:layout_toEndOf="@+id/title"

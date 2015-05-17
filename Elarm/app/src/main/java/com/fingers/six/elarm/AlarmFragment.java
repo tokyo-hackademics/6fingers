@@ -1,6 +1,7 @@
 package com.fingers.six.elarm;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -56,15 +57,17 @@ public class AlarmFragment extends Fragment {
             public void onClick(View v) {
                // (new AlarmHandler(getActivity(),"alarm_db")).addAlarmTime("12:00","AM");
                 // Manage fragments
-                fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-                if(alarmsetting == null) {
-                    alarmsetting = new AlarmSettingFragment();
-                    fragmentTransaction.add(R.id.mainContent,alarmsetting,"alarmsetting");
-                }
-
-                fragmentTransaction.commit();
+//                fragmentManager = getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.main_content,alarmsetting);
+//                if(alarmsetting == null) {
+//                    alarmsetting = new AlarmSettingFragment();
+//                    fragmentTransaction.add(R.id.fragment_sub,alarmsetting,"alarmsetting");
+//                }
+//
+//                fragmentTransaction.commit();
+                Intent intent = new Intent(getActivity(),AlarmSettingFragment.class);
+                getActivity().startActivity(intent);
             }
         });
         return view;
