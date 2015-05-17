@@ -66,6 +66,7 @@ public class ElarmActivity extends ActionBarActivity {
                 selectItemFromDrawer(position);
                 // The actions which are added below this line shouldn't be duplicated
                 // with the content in above selectItemFromDrawer(position);
+
             }
         });
 
@@ -77,7 +78,6 @@ public class ElarmActivity extends ActionBarActivity {
 
         settings = (SettingsFragment)fragmentManager.findFragmentByTag("settings");
         alarm    = (AlarmFragment)fragmentManager.findFragmentByTag("alarm");
-
 
         if(elarm == null) {
             elarm = new HomeFragment();
@@ -96,6 +96,7 @@ public class ElarmActivity extends ActionBarActivity {
 
         fragmentTransaction.detach(settings);
         fragmentTransaction.detach(alarm);
+
         fragmentTransaction.commit();
 
         // Preference manager
@@ -135,10 +136,11 @@ public class ElarmActivity extends ActionBarActivity {
         else if("Setting".equalsIgnoreCase(title)) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(alarm);
+
             //Attach settings
             fragmentTransaction.attach(settings);
         }
-        if(title.equals("Alarm")) {
+        if("Alarm".equals(title)) {
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
 
@@ -189,6 +191,29 @@ public class ElarmActivity extends ActionBarActivity {
 
         Log.d("MainActivity", "Now time_mode = " + sharedPreferences.getInt("time_mode", -1));
     }
+
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.menu_elarm, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
+//}
 
     /**
      * To handle events when any checkboxes button in the app is clicked.

@@ -160,4 +160,5 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         // return count
         return Integer.parseInt(cursor.getString(0));
     }
+
 }
