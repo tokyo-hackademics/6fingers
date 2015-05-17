@@ -19,6 +19,10 @@ public class DateTimeUtils {
         return Days.daysBetween(BASE_TIME, date).getDays();
     }
 
+    public static String convertDaysToString(long date){
+        return (new LocalDate(2000, 1, 1)).plusDays((int)date).toString().substring(5).replace('-', '/');
+    }
+
     public static int convertToSeconds(LocalDateTime date) {
         return Seconds.secondsBetween(BASE_DATE_TIME, date).getSeconds();
     }
