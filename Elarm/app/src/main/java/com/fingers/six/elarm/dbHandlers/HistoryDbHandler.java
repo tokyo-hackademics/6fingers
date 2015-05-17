@@ -55,7 +55,7 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
     private void generateMockData() {
         SQLiteDatabase db = getWritableDatabase();
         onUpgrade(db, 1, 2);
-        int today = DateTimeUtils.convertToDays(new LocalDate());
+        int today = DateTimeUtils.convertToDays(LocalDate.now());
         add(new HistoryItem(today, 999, "Kanji N1", 76));
         add(new HistoryItem(today - 1, 999, "Kanji N1", 56));
         add(new HistoryItem(today - 2, 999, "Kanji N1", 76));

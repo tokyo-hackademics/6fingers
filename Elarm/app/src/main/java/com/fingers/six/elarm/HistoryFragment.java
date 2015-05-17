@@ -14,10 +14,12 @@ import android.widget.ListView;
 import com.fingers.six.elarm.adapters.HistoryListAdapter;
 import com.fingers.six.elarm.common.HistoryItem;
 import com.fingers.six.elarm.dbHandlers.HistoryDbHandler;
+import com.fingers.six.elarm.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import lecho.lib.hellocharts.gesture.ZoomType;
 import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.AxisValue;
 import lecho.lib.hellocharts.model.ChartData;
@@ -25,6 +27,8 @@ import lecho.lib.hellocharts.model.ColumnChartData;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.Viewport;
+import lecho.lib.hellocharts.util.ChartUtils;
 import lecho.lib.hellocharts.view.Chart;
 import lecho.lib.hellocharts.view.LineChartView;
 
@@ -81,44 +85,88 @@ public class HistoryFragment extends Fragment {
         }
     }
 
+    LineChartData lineData;
+
+    private void generateInitialLineData() {
+
+
+        // For build-up animation you have to disable viewport recalculation.
+        chart.setViewportCalculationEnabled(false);
+
+        // And set initial max viewport and current viewport- remember to set viewports after data.
+        Viewport v = new Viewport(0, 110, 6, 0);
+        chart.setMaximumViewport(v);
+        chart.setCurrentViewport(v);
+
+        chart.setZoomType(ZoomType.HORIZONTAL);
+    }
+
+    private void generateLineData(int color, float range) {
+
+
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_history, container, false);
 
+
         lstHistory = (ListView) v.findViewById(R.id.lstHistory);
         chart = (LineChartView) v.findViewById(R.id.chart);
+        this.generateInitialLineData();
 
         lstHistory.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayList<HistoryItem> chartList = (ArrayList<HistoryItem>) (new HistoryDbHandler(getActivity()))
                         .searchByDateAndName(0, ((HistoryItem) lstHistory.getAdapter().getItem(position)).get_questionName());
+
+                // Cancel last animation if not finished.
+                chart.cancelDataAnimation();
+
+                int numValues = chartList.size();
+
+                List<AxisValue> axisValues = new ArrayList<AxisValue>();
                 List<PointValue> values = new ArrayList<PointValue>();
-                for (int i = 0; i < chartList.size(); i++) {
+                for (int i = 0; i < numValues; ++i) {
                     values.add(new PointValue(i, (float) chartList.get(i).get_score()));
+                    axisValues.add(new AxisValue(i).setLabel(DateTimeUtils.convertDaysToString(chartList.get(i).get_date())));
                 }
-                //In most cased you can call data model methods in builder-pattern-like manner.
-                Line line = new Line(values).setColor(Color.BLUE).setCubic(true);
+
+                Line line = new Line(values);
+
                 List<Line> lines = new ArrayList<Line>();
                 lines.add(line);
 
-//                ArrayList<AxisValue> xAVal = new ArrayList<AxisValue>();
-//                for(int i = 0;i< chartList.size();i++){
-//                    xAVal.add(i, new AxisValue())
-//                }
-//                Axis xA = new Axis(new ArrayList<AxisValue>());
+                lineData = new LineChartData(lines);
+                lineData.setAxisXBottom(new Axis(axisValues).setHasLines(true));
+                lineData.setAxisYLeft(new Axis().setHasLines(true).setMaxLabelChars(3));
 
-                LineChartData data = new LineChartData();
-                data.setLines(lines);
+                // Modify data targets
+                line = lineData.getLines().get(0);// For this example there is always only one line.
+                line.setColor(ChartUtils.COLOR_GREEN).setCubic(true);
 
-                chart.setLineChartData(data);
+
+
+//                lineData.setLines(lines);
+
+                chart.setLineChartData(lineData);
+
+                for (PointValue value : line.getValues()) {
+                    // Change target only for Y value.
+                    value.setTarget(value.getX(), value.getY());
+                }
+
+                // Start new data animation with 300ms duration;
+                chart.startDataAnimation(300);
             }
 
 
-
         });
+
 
         lstHistory.setAdapter(new HistoryListAdapter(this.getActivity(), ""));
 
@@ -147,6 +195,7 @@ public class HistoryFragment extends Fragment {
 //            mListener.onFragmentInteraction(uri);
 //        }
     }
+
 
     @Override
     public void onAttach(Activity activity) {
