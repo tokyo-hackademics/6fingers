@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.fingers.six.elarm.common.HistoryItem;
+import com.fingers.six.elarm.utils.DateTimeUtils;
+
+import org.joda.time.LocalDate;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,6 +37,47 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
 
     public HistoryDbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+
+        String query = "CREATE TABLE " + TABLE_NAME + "("
+                + KEY_ID + " INTEGER PRIMARY KEY, "
+                + KEY_DATE + " INTEGER, "
+                + KEY_QID + " INTEGER, "
+                + KEY_LIST_NAME + " TEXT NOT NULL, "
+                + KEY_SCORE + " INTEGER)";
+        try {
+            getWritableDatabase().execSQL(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generateMockData() {
+        SQLiteDatabase db = getWritableDatabase();
+        onUpgrade(db, 1, 2);
+        int today = DateTimeUtils.convertToDays(new LocalDate());
+        add(new HistoryItem(today, 999, "Kanji N1", 76));
+        add(new HistoryItem(today - 1, 999, "Kanji N1", 56));
+        add(new HistoryItem(today - 2, 999, "Kanji N1", 76));
+        add(new HistoryItem(today - 3, 999, "Kanji N1", 86));
+        add(new HistoryItem(today - 4, 999, "Kanji N1", 52));
+        add(new HistoryItem(today - 5, 999, "Kanji N1", 45));
+        add(new HistoryItem(today - 6, 999, "Kanji N1", 75));
+
+        add(new HistoryItem(today, 998, "Grammar N1", 23));
+        add(new HistoryItem(today - 1, 998, "Grammar N1", 34));
+        add(new HistoryItem(today - 2, 998, "Grammar N1", 45));
+        add(new HistoryItem(today - 3, 998, "Grammar N1", 48));
+        add(new HistoryItem(today - 4, 998, "Grammar N1", 65));
+        add(new HistoryItem(today - 5, 998, "Grammar N1", 76));
+        add(new HistoryItem(today - 6, 998, "Grammar N1", 90));
+
+        add(new HistoryItem(today, 997, "Reading N1", 45));
+        add(new HistoryItem(today, 997, "Reading N1", 53));
+        add(new HistoryItem(today, 997, "Reading N1", 52));
+        add(new HistoryItem(today, 997, "Reading N1", 25));
+        add(new HistoryItem(today, 997, "Reading N1", 67));
+        add(new HistoryItem(today, 997, "Reading N1", 78));
+        add(new HistoryItem(today, 997, "Reading N1", 10));
     }
 
     // Creating Tables
@@ -41,7 +85,7 @@ public class HistoryDbHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME + "("
                 + KEY_ID + " INTEGER PRIMARY KEY, "
-                + KEY_DATE + " INTEGER, "
+                + KEY_DATE + " LONG, "
                 + KEY_QID + " INTEGER, "
                 + KEY_LIST_NAME + " TEXT NOT NULL, "
                 + KEY_SCORE + " INTEGER)";
