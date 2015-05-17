@@ -1,18 +1,19 @@
 package com.fingers.six.elarm;
 
-
 import android.content.Intent;
-import android.net.Uri;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -20,6 +21,14 @@ import android.widget.RelativeLayout;
 import android.widget.AdapterView;
 import android.view.View;
 
+import com.fingers.six.elarm.common.SwipeGestureFilter;
+import com.fingers.six.elarm.common.SwipeGestureFilter.SwipeGestureListener;
+import com.fingers.six.elarm.fragments.AlarmFragment;
+import com.fingers.six.elarm.fragments.HistoryFragment;
+import com.fingers.six.elarm.fragments.HomeFragment;
+import com.fingers.six.elarm.fragments.QuestionFragment;
+import com.fingers.six.elarm.fragments.QuestionListDetailFragment;
+import com.fingers.six.elarm.fragments.SettingsFragment;
 import com.fingers.six.elarm.sidebar.NavigationItem;
 import com.fingers.six.elarm.sidebar.DrawerListAdapter;
 
@@ -27,15 +36,15 @@ import java.util.ArrayList;
 
 
 public class ElarmActivity
-        extends ActionBarActivity
-        implements HomeFragment.Callbacks,
-        HomeFragment.OnFragmentInteractionListener,
-        QuestionListDetailFragment.OnFragmentInteractionListener {
+        extends ActionBarActivity implements HomeFragment.Callbacks, SwipeGestureListener{
 
     ArrayList<NavigationItem> mnavigationItems = new ArrayList<NavigationItem>();
     private DrawerLayout mDrawerLayout;
     RelativeLayout mDrawerPane;
     ListView mDrawerList;
+
+    // To detect swipe action
+    SwipeGestureFilter detector;
 
 
     // Manage fragments
@@ -47,17 +56,22 @@ public class ElarmActivity
     SettingsFragment settings;
     HistoryFragment history;
     AlarmFragment alarm;
+    QuestionFragment question;
 
     // Manage Preference data by a key-value database
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
 
+    // BroadCastReceiver to catch unlock screen event
+    BroadcastReceiver broadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_elarm);
+        // Detect touched area
+        detector = new SwipeGestureFilter(this,this);
 
 
         mnavigationItems.add(new NavigationItem("Home", R.mipmap.ic_launcher));
@@ -87,12 +101,11 @@ public class ElarmActivity
         fragmentManager = this.getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
 
-
         elarm = (HomeFragment) fragmentManager.findFragmentByTag("home");
         settings = (SettingsFragment) fragmentManager.findFragmentByTag("settings");
         history = (HistoryFragment) fragmentManager.findFragmentByTag("history");
         alarm = (AlarmFragment) fragmentManager.findFragmentByTag("alarm");
-
+        question = (QuestionFragment)fragmentManager.findFragmentByTag("question");
 
         if (elarm == null) {
             elarm = new HomeFragment();
@@ -116,11 +129,17 @@ public class ElarmActivity
             fragmentTransaction.add(R.id.mainContent, alarm, "alarm");
         }
 
+        if(question == null) {
+            question = new QuestionFragment();
+            fragmentTransaction.add(R.id.mainContent,question,"question");
+        }
+
         fragmentTransaction.detach(settings);
 
         fragmentTransaction.detach(history);
 
         fragmentTransaction.detach(alarm);
+        fragmentTransaction.detach(question);
 
         fragmentTransaction.commit();
 
@@ -136,6 +155,30 @@ public class ElarmActivity
             editor.putInt("unlock_or_not", 0); // show questions after unlock screen
         }
         editor.commit();
+
+        // BroadCastReceiver
+        broadcastReceiver =  new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                String action = intent.getAction();
+                // Detect screen unlocking events
+                if(Intent.ACTION_USER_PRESENT.equalsIgnoreCase(action)) {
+                    Log.d("MainActivity", "Screen is unlocked");
+                    fragmentTransaction = ((ElarmActivity)context).getSupportFragmentManager().beginTransaction();
+
+                    fragmentTransaction.detach(elarm);
+                    fragmentTransaction.detach(settings);
+                    fragmentTransaction.detach(alarm);
+                    fragmentTransaction.attach(question);
+
+                    fragmentTransaction.commitAllowingStateLoss();
+                }
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_USER_PRESENT);
+        registerReceiver(broadcastReceiver, intentFilter);
     }
 
     /**
@@ -159,6 +202,7 @@ public class ElarmActivity
             fragmentTransaction.detach(history);
 
             fragmentTransaction.detach(alarm);
+            fragmentTransaction.detach(question);
 
             // Attach elarm
             fragmentTransaction.attach(elarm);
@@ -168,7 +212,7 @@ public class ElarmActivity
             fragmentTransaction.detach(history);
 
             fragmentTransaction.detach(alarm);
-
+            fragmentTransaction.detach(question);
             //Attach settings
             fragmentTransaction.attach(settings);
 
@@ -184,7 +228,8 @@ public class ElarmActivity
             fragmentTransaction.detach(elarm);
             fragmentTransaction.detach(settings);
             fragmentTransaction.detach(history);
-
+            fragmentTransaction.detach(question);
+            // Attach an alarm view
             fragmentTransaction.attach(alarm);
         }
 
@@ -234,7 +279,6 @@ public class ElarmActivity
         Log.d("MainActivity", "Now time_mode = " + sharedPreferences.getInt("time_mode", -1));
     }
 
-
     @Override
     public void onItemSelected(String id) {
         // In single-pane mode, simply start the detail activity
@@ -243,27 +287,6 @@ public class ElarmActivity
         detailIntent.putExtra(QuestionListDetailFragment.ARG_ITEM_ID, id);
         startActivity(detailIntent);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_elarm, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 
     /**
      * To handle events when any checkboxes button in the app is clicked.
@@ -294,7 +317,37 @@ public class ElarmActivity
     }
 
     @Override
-    public void onFragmentInteraction(Uri uri) {
+    public void onSwipe(int direction) {
+        String str = "";
 
+        switch (direction) {
+
+            case SwipeGestureFilter.SWIPE_RIGHT : str = "Swipe Right";
+                break;
+            case SwipeGestureFilter.SWIPE_LEFT :  str = "Swipe Left";
+                break;
+            case SwipeGestureFilter.SWIPE_DOWN :  str = "Swipe Down";
+                break;
+            case SwipeGestureFilter.SWIPE_UP :    str = "Swipe Up";
+                break;
+            default:
+                break;
+
+        }
+
+        Log.d("MainActivity", "New action:" + str);
     }
+
+    @Override
+    public void onDoubleTap() {
+        Log.d("MainActivity", "Double Tap");
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent me){
+        // Call onTouchEvent of SimpleGestureFilter class
+        detector.onTouchEvent(me);
+        return super.dispatchTouchEvent(me);
+    }
+
 }

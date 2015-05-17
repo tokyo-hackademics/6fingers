@@ -1,4 +1,4 @@
-package com.fingers.six.elarm;
+package com.fingers.six.elarm.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
@@ -10,24 +10,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.fingers.six.elarm.R;
 import com.fingers.six.elarm.adapters.QuestionListDetailSwipeAdapter;
 import com.fingers.six.elarm.common.Word;
-import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
 import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
 import com.fingers.six.elarm.utils.DateTimeUtils;
 
 import org.joda.time.LocalDateTime;
-import org.w3c.dom.Text;
 
 
 /**
  * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link QuestionListDetailFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
  * Use the {@link QuestionListDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
@@ -55,8 +50,6 @@ public class QuestionListDetailFragment extends Fragment {
     EditText txtAddWord;
     EditText txtAddMeaning;
     ListView lstWordList;
-
-    private OnFragmentInteractionListener mListener;
 
     /**
      * Use this factory method to create a new instance of
@@ -125,42 +118,18 @@ public class QuestionListDetailFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
         Toast.makeText(getActivity(), "in onButtonPressed", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
 }

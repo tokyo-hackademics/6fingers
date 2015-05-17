@@ -6,7 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.fingers.six.elarm.common.Data;
 import com.fingers.six.elarm.common.QuestionList;
+import com.fingers.six.elarm.common.Word;
+import com.fingers.six.elarm.utils.DateTimeUtils;
+
+import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +31,17 @@ public class MasterDbHandler extends SQLiteOpenHelper {
     private static final String KEY_ID = "ID";
     private static final String KEY_LIST_NAME = "KEY_LIST_NAME";
 
-    // context
-    //Context
-
     public MasterDbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        ContentValues values = getContentValues("KANJI_N5");
+
+        // Inserting Row
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+
+        // Create tables again
+        onCreate(db);
+        getWritableDatabase().insert(TABLE_NAME, null, values);
     }
 
     // Creating Tables
@@ -61,9 +73,6 @@ public class MasterDbHandler extends SQLiteOpenHelper {
 
         // new table
         //(new WordListDbHandler())
-
-        db.close(); // Closing database connection
-
 
     }
 
@@ -140,7 +149,6 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_NAME, KEY_ID + " = ?",
                 new String[]{String.valueOf(list.get_id())});
-        db.close();
     }
 
 //    // Getting words count

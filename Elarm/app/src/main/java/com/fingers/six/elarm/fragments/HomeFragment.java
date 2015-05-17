@@ -1,11 +1,9 @@
-package com.fingers.six.elarm;
+package com.fingers.six.elarm.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +11,10 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.daimajia.swipe.SwipeLayout;
 import com.fingers.six.elarm.adapters.QuestionListSwipeAdapter;
 import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
+import com.fingers.six.elarm.R;
 import com.fingers.six.elarm.common.QuestionList;
-import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
 
 import java.util.ArrayList;
 
@@ -80,8 +75,6 @@ public class HomeFragment extends Fragment {
         public void onItemSelected(String id) {
         }
     };
-
-    private OnFragmentInteractionListener mListener;
 
 
     //Views
@@ -210,9 +203,6 @@ public class HomeFragment extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
     }
 
     @Override
@@ -260,12 +250,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
 
         if (!(activity instanceof Callbacks)) {
             throw new IllegalStateException("Activity must implement fragment's callbacks.");
@@ -278,24 +262,9 @@ public class HomeFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
         mCallbacks = sDummyCallbacks;
 
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
-    }
 
 }
