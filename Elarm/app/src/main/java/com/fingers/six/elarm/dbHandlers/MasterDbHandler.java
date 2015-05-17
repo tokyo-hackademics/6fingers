@@ -8,11 +8,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.fingers.six.elarm.common.Data;
 import com.fingers.six.elarm.common.QuestionList;
-import com.fingers.six.elarm.common.Word;
-import com.fingers.six.elarm.utils.DateTimeUtils;
-
-import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 
 import java.util.ArrayList;
 import java.util.List;

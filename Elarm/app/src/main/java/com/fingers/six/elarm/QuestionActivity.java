@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.TextView;
 
 
 /**
@@ -111,6 +113,15 @@ public class QuestionActivity extends Activity {
                 }
             }
         });
+
+
+        // Get parts
+        Button mAns1 = (Button)findViewById(R.id.answer_1);
+        Button mAns2 = (Button)findViewById(R.id.answer_2);
+        Button mAns3 = (Button)findViewById(R.id.answer_3);
+        Button mAns4 = (Button)findViewById(R.id.answer_4);
+
+        TextView question_word = (TextView)findViewById(R.id.txt_question_word);
     }
 
     @Override
