@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,12 +60,18 @@ public class QuestionListSwipeAdapter extends BaseSwipeAdapter {
     public void fillValues(int position, View convertView) {
         TextView textView = (TextView) convertView.findViewById(R.id.lblQuestionListName);
         textView.setText(values.get(position).get_name());
-        TextView lblGreen = (TextView) convertView.findViewById(R.id.lblGreen);
-        lblGreen.setText(values.get(position).get_status()[0] + "");
-        TextView lblYellow = (TextView) convertView.findViewById(R.id.lblYellow);
-        lblYellow.setText(values.get(position).get_status()[1] + "");
-        TextView lblRed = (TextView) convertView.findViewById(R.id.lblRed);
-        lblRed.setText(values.get(position).get_status()[2] + "");
+
+        Button btnGreen = (Button) convertView.findViewById(R.id.btnGreen);
+        btnGreen.setText(values.get(position).get_status()[0] + "");
+        btnGreen.setClickable(false);
+
+        Button btnYellow = (Button) convertView.findViewById(R.id.btnYellow);
+        btnYellow.setText(values.get(position).get_status()[1] + "");
+        btnYellow.setClickable(false);
+
+        Button btnRed = (Button) convertView.findViewById(R.id.btnRed);
+        btnRed.setText(values.get(position).get_status()[2] + "");
+        btnRed.setClickable(false);
 
         final SwipeLayout swipeLayout = (SwipeLayout) convertView.findViewById(getSwipeLayoutResourceId(position));
         swipeLayout.setTag(position);
