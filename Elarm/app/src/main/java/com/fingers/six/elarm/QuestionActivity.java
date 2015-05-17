@@ -1,17 +1,26 @@
 package com.fingers.six.elarm;
 
+import com.fingers.six.elarm.common.QuestionItem;
+import com.fingers.six.elarm.common.QuestionList;
+import com.fingers.six.elarm.common.Word;
+import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
+import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
 import com.fingers.six.elarm.util.SystemUiHider;
+import com.fingers.six.elarm.utils.TestUtils;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 
 /**
@@ -48,6 +57,15 @@ public class QuestionActivity extends Activity {
      * The instance of the {@link SystemUiHider} for this activity.
      */
     private SystemUiHider mSystemUiHider;
+
+
+    Button mAns1;
+    Button mAns2;
+    Button mAns3;
+    Button mAns4;
+
+    TextView question_word;
+    QuestionItem questionItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,15 +134,58 @@ public class QuestionActivity extends Activity {
 
 
         // Get parts
-        Button mAns1 = (Button)findViewById(R.id.answer_1);
-        Button mAns2 = (Button)findViewById(R.id.answer_2);
-        Button mAns3 = (Button)findViewById(R.id.answer_3);
-        Button mAns4 = (Button)findViewById(R.id.answer_4);
+        mAns1 = (Button)findViewById(R.id.answer_1);
+        mAns2 = (Button)findViewById(R.id.answer_2);
+        mAns3 = (Button)findViewById(R.id.answer_3);
+        mAns4 = (Button)findViewById(R.id.answer_4);
 
-        TextView question_word = (TextView)findViewById(R.id.txt_question_word);
+        question_word = (TextView)findViewById(R.id.txt_question_word);
 
         // Generate a quick question
+        QuestionList questionList = new MasterDbHandler(getApplicationContext()).getAQuestionList(1);
 
+        try {
+            ArrayList<Word> wordArrayList = (ArrayList<Word>) (
+                    new WordListDbHandler(getApplicationContext(),
+                    "KANJI_N5").getAllWords());
+            questionList.set_wordList(wordArrayList);
+            autoGenerateQuestion(questionList);
+
+        } catch (Exception e) {
+            Log.d("Error", e.toString());
+        }
+
+
+        mAns1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                questionItem.set_userAnswer(mAns1.getText().toString());
+                finish();
+            }
+        });
+
+        mAns2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                questionItem.set_userAnswer(mAns2.getText().toString());
+                Log.d("Button", questionItem.get_userAnswer());
+                finish();
+            }
+        });
+        mAns3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                questionItem.set_userAnswer(mAns3.getText().toString());
+                finish();
+            }
+        });
+        mAns4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                questionItem.set_userAnswer(mAns4.getText().toString());
+                finish();
+            }
+        });
 
     }
 
@@ -169,5 +230,19 @@ public class QuestionActivity extends Activity {
     private void delayedHide(int delayMillis) {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
+    }
+
+    private void autoGenerateQuestion(QuestionList questionList) {
+        questionItem = TestUtils.generateQuickQuestion(questionList);
+
+        if(questionItem.is_isEngToJap()) {
+            question_word.setText(questionItem.get_word().get_eng());
+        } else question_word.setText(questionItem.get_word().get_jap());
+
+        String[] ans = questionItem.get_answers();
+        mAns1.setText(ans[0]);
+        mAns2.setText(ans[1]);
+        mAns3.setText(ans[2]);
+        mAns4.setText(ans[3]);
     }
 }

@@ -78,8 +78,9 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_NAME, new String[]{KEY_ID,
                         KEY_LIST_NAME}, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
-        cursor.close();
         cursor.moveToFirst();
+
+//        cursor.close();
 
         return getQuestionListFromCursor(cursor);
     }

@@ -7,7 +7,7 @@ public class QuestionItem {
     private Word _word;
     private boolean _isEngToJap;
     private String[] _answers;
-    private String _userAnswer;
+    private String _userAnswer = "";
 
     public boolean isGoodAnswer() {
         return _userAnswer.equals(_isEngToJap ? _word.get_jap() : _word.get_eng());

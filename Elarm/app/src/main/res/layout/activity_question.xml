@@ -38,13 +38,13 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:id="@+id/answer_first_row">
 
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="128sp"
+                    android:layout_height="wrap_content"
                     android:text="@string/app_name"
                     android:layout_weight="1"
                     android:backgroundTint="@color/green"
@@ -53,7 +53,7 @@
 
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="128sp"
+                    android:layout_height="match_parent"
                     android:text="@string/app_name"
                     android:backgroundTint="@color/black_overlay"
                     android:layout_weight="1"
@@ -68,7 +68,7 @@
                 android:id="@+id/answer_second_row">
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="128sp"
+                    android:layout_height="match_parent"
                     android:text="@string/app_name"
                     android:backgroundTint="@color/maroon"
                     android:textColor="@color/white"
@@ -77,7 +77,7 @@
 
                 <Button
                     android:layout_width="match_parent"
-                    android:layout_height="128sp"
+                    android:layout_height="match_parent"
                     android:text="@string/app_name"
                     android:backgroundTint="@color/olive"
                     android:textColor="@color/white"

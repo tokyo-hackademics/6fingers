@@ -1,6 +1,7 @@
 package com.fingers.six.elarm.common;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class QuestionList {
@@ -8,7 +9,7 @@ public class QuestionList {
     private int _lastId;
     private String _name;
     private String _dbName;
-    private TreeSet<Word> _wordList;
+    private ArrayList<Word> _wordList;
     private int[] _status;
 
     public QuestionList(int id, String name) {
@@ -16,7 +17,7 @@ public class QuestionList {
         set_name(name);
         while (name.contains(" ")) name = name.replace(" ", "");
         set_dbName(name);
-        set_wordList(new TreeSet<Word>());
+        set_wordList(new ArrayList<Word>());
         set_status(new int[3]);
         set_lastId(0);
     }
@@ -51,11 +52,11 @@ public class QuestionList {
         return sb.toString();
     }
 
-    public TreeSet<Word> get_wordList() {
+    public ArrayList<Word> get_wordList() {
         return _wordList;
     }
 
-    public void set_wordList(TreeSet<Word> _wordList) {
+    public void set_wordList(ArrayList<Word> _wordList) {
         this._wordList = _wordList;
     }
 

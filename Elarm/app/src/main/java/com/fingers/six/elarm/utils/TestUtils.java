@@ -23,7 +23,7 @@ public class TestUtils {
         int threshold = RandomUtils.next(1000);
         QuestionItem ret;
         do {
-            ret = generateTest(isEngToJap, 1, questionList, 2)[0];
+            ret = generateTest(isEngToJap, 1, questionList, 4)[0];
         } while (ret.get_word().get_score() >= threshold);
         return ret;
     }
