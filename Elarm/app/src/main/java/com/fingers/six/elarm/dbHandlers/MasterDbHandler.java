@@ -1,4 +1,4 @@
-package com.fingers.six.elarm.common;
+package com.fingers.six.elarm.dbHandlers;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -6,12 +6,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.fingers.six.elarm.common.QuestionList;
+
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Nghia on 5/16/2015.
- */
 public class MasterDbHandler extends SQLiteOpenHelper {
 
     private static final String TABLE_NAME = "MASTER_DB";
@@ -24,7 +23,10 @@ public class MasterDbHandler extends SQLiteOpenHelper {
 
     // Table Columns names
     private static final String KEY_ID = "ID";
-    private static final String LISTNAME = "LISTNAME";
+    private static final String KEY_LIST_NAME = "KEY_LIST_NAME";
+
+    // context
+    //Context
 
     public MasterDbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -34,7 +36,7 @@ public class MasterDbHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "CREATE TABLE " + TABLE_NAME + "("
-                + KEY_ID + " INTEGER PRIMARY KEY, " + LISTNAME + " TEXT NOT NULL)";
+                + KEY_ID + " INTEGER PRIMARY KEY, " + KEY_LIST_NAME + " TEXT NOT NULL)";
         db.execSQL(query);
     }
 
@@ -52,12 +54,17 @@ public class MasterDbHandler extends SQLiteOpenHelper {
     public void addList(String listName) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(LISTNAME, listName);
+        ContentValues values = getContentValues(listName);
 
         // Inserting Row
         db.insert(TABLE_NAME, null, values);
+
+        // new table
+        //(new WordListDbHandler())
+
         db.close(); // Closing database connection
+
+
     }
 
     // Getting single record
@@ -65,19 +72,19 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_NAME, new String[]{KEY_ID,
-                        LISTNAME}, KEY_ID + "=?",
+                        KEY_LIST_NAME}, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
-        if (cursor != null)
-            cursor.moveToFirst();
+        cursor.close();
+        cursor.moveToFirst();
 
-        return new QuestionList(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
+        return getQuestionListFromCursor(cursor);
     }
 
     // Getting All question lists
     public List<QuestionList> getAllQuestionList() {
-        List<QuestionList> list = new ArrayList<QuestionList>();
+        List<QuestionList> list = new ArrayList<>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " ORDER BY " + LISTNAME;
+        String selectQuery = "SELECT  * FROM " + TABLE_NAME + " ORDER BY " + KEY_LIST_NAME;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -85,7 +92,7 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         // looping through all rows and adding to list
         if (cursor.moveToFirst()) {
             do {
-                list.add(new QuestionList(Integer.parseInt(cursor.getString(0)), cursor.getString(1)));
+                list.add(getQuestionListFromCursor(cursor));
             } while (cursor.moveToNext());
         }
 
@@ -94,13 +101,13 @@ public class MasterDbHandler extends SQLiteOpenHelper {
     }
 
     public List<QuestionList> search(String keyword) {
-        if(keyword.isEmpty()){
+        if (keyword.isEmpty()) {
             return getAllQuestionList();
         }
-        List<QuestionList> questionPackList = new ArrayList<QuestionList>();
+        List<QuestionList> questionPackList = new ArrayList<>();
         // Select Query
         String selectQuery = "SELECT  * FROM " + TABLE_NAME
-                + " WHERE (" + LISTNAME + " LIKE '%" + keyword + "%') ORDER BY " + LISTNAME;
+                + " WHERE (" + KEY_LIST_NAME + " LIKE '%" + keyword + "%') ORDER BY " + KEY_LIST_NAME;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
@@ -109,7 +116,7 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 // Adding word to list
-                questionPackList.add(new QuestionList(Integer.parseInt(cursor.getString(0)), cursor.getString(1)));
+                questionPackList.add(getQuestionListFromCursor(cursor));
             } while (cursor.moveToNext());
         }
 
@@ -121,8 +128,7 @@ public class MasterDbHandler extends SQLiteOpenHelper {
     public int updateListName(QuestionList qlist) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(LISTNAME, qlist.get_name());
+        ContentValues values = getContentValues(qlist.get_name());
 
         // updating row
         return db.update(TABLE_NAME, values, KEY_ID + " = ?",
@@ -137,28 +143,38 @@ public class MasterDbHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    // Getting words count
-    public int getListsCount() {
-        String countQuery = "SELECT * FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
+//    // Getting words count
+//    public int getListsCount() {
+//        String countQuery = "SELECT * FROM " + TABLE_NAME;
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(countQuery, null);
+//        cursor.close();
+//
+//        // return count
+//        return cursor.getCount();
+//    }
+//
+//    public int getMaxId() {
+//        String maxQuery = "SELECT MAX(" + KEY_ID + ") FROM " + TABLE_NAME;
+//        SQLiteDatabase db = this.getReadableDatabase();
+//        Cursor cursor = db.rawQuery(maxQuery, null);
+//
+//        // TODO: Check this
+//        cursor.close();
+//        cursor.moveToFirst();
+//
+//        // return count
+//        return Integer.parseInt(cursor.getString(0));
+//    }
 
-        // return count
-        return cursor.getCount();
+    private ContentValues getContentValues(String listName) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_LIST_NAME, listName);
+        return values;
     }
 
-    public int getMaxId() {
-        String maxQuery = "SELECT MAX(" + KEY_ID + ") FROM " + TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(maxQuery, null);
-
-        // TODO: Check this
-        cursor.close();
-        cursor.moveToFirst();
-
-        // return count
-        return Integer.parseInt(cursor.getString(0));
+    private QuestionList getQuestionListFromCursor(Cursor cursor) {
+        return new QuestionList(Integer.parseInt(cursor.getString(0)), cursor.getString(1));
     }
 
 }

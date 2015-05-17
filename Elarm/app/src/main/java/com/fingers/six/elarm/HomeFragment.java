@@ -4,22 +4,24 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.fingers.six.elarm.adapters.QuestionListAdapter;
-import com.fingers.six.elarm.common.MasterDbHandler;
+import com.daimajia.swipe.SwipeLayout;
+import com.fingers.six.elarm.adapters.QuestionListSwipeAdapter;
+import com.fingers.six.elarm.dbHandlers.MasterDbHandler;
 import com.fingers.six.elarm.common.QuestionList;
+import com.fingers.six.elarm.dbHandlers.WordListDbHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -40,7 +42,47 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-//    private OnFragmentInteractionListener mListener;
+    /**
+     * The serialization (saved instance state) Bundle key representing the
+     * activated item position. Only used on tablets.
+     */
+    private static final String STATE_ACTIVATED_POSITION = "activated_position";
+
+    /**
+     * The fragment's current callback object, which is notified of list item
+     * clicks.
+     */
+    private Callbacks mCallbacks = sDummyCallbacks;
+
+    /**
+     * The current activated item position. Only used on tablets.
+     */
+    private int mActivatedPosition = ListView.INVALID_POSITION;
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callbacks {
+        /**
+         * Callback for when an item has been selected.
+         */
+        public void onItemSelected(String id);
+    }
+
+    /**
+     * A dummy implementation of the {@link Callbacks} interface that does
+     * nothing. Used only when this fragment is not attached to an activity.
+     */
+    private static Callbacks sDummyCallbacks = new Callbacks() {
+        @Override
+        public void onItemSelected(String id) {
+        }
+    };
+
+    private OnFragmentInteractionListener mListener;
+
 
     //Views
     private ListView lstQuestionList;
@@ -76,104 +118,92 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private ArrayList<QuestionList> genDummyQuestionList() {
-        String[] values = new String[]{"Android List View",
-                "Adapter implementation",
-                "Simple List View In Android",
-                "Create List View Android",
-                "Android Example",
-                "List View Source Code",
-                "List View Array Adapter",
-                "Android Example List View"
-        };
-        ArrayList<QuestionList> qLst = new ArrayList<QuestionList>();
-        for (int i = 0; i < values.length; i++) {
-            QuestionList tmpQstLst = new QuestionList(i, values[i]);
-            tmpQstLst.set_status(new int[]{0, 1, 2});
-            qLst.add(tmpQstLst);
-        }
-
-        return qLst;
-    }
-
-    private ArrayList<QuestionList> loadQuestionListFromDb(){
-        MasterDbHandler db = new MasterDbHandler(this.getActivity());
-        return (ArrayList<QuestionList>)db.getAllQuestionList();
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        final EditText txtAddList = (EditText)view.findViewById(R.id.txtAddList);
-        Button btnAdd = (Button)view.findViewById(R.id.btnAdd);
+        final EditText txtAddList = (EditText) view.findViewById(R.id.txtAddList);
+        Button btnAdd = (Button) view.findViewById(R.id.btnAdd);
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 (new MasterDbHandler(getActivity())).addList(txtAddList.getText().toString());
+               // (new WordListDbHandler(getActivity(),txtAddList.getText().toString())).
                 txtAddList.setText("");
                 //TODO: dismiss keyboard
 
                 // Update listview
-                lstQuestionList.setAdapter(new QuestionListAdapter(getActivity(), ""));
+                lstQuestionList.setAdapter(new QuestionListSwipeAdapter(getActivity(), ""));
             }
         });
 
-        final EditText txtSearch = (EditText)view.findViewById(R.id.txtInputKeyword);
-        Button btnSearch = (Button)view.findViewById(R.id.btnSearch);
+        final EditText txtSearch = (EditText) view.findViewById(R.id.txtInputKeyword);
+        Button btnSearch = (Button) view.findViewById(R.id.btnSearch);
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO: dismiss keyboard
 
                 // Update listview
-                lstQuestionList.setAdapter(new QuestionListAdapter(getActivity(), txtSearch.getText().toString()));
+                lstQuestionList.setAdapter(new QuestionListSwipeAdapter(getActivity(), txtSearch.getText().toString()));
             }
         });
-
 
 
         lstQuestionList = (ListView) view.findViewById(R.id.lstQuestionList);
-        // Defined Array values to show in ListView
-
-
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
-
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this.getActivity(),
-//                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
-        QuestionListAdapter adapter = new QuestionListAdapter(this.getActivity(),
-                loadQuestionListFromDb());
+        QuestionListSwipeAdapter adapter = new QuestionListSwipeAdapter(this.getActivity(), txtSearch.getText().toString());
         // Assign adapter to ListView
         lstQuestionList.setAdapter(adapter);
 
-        // ListView Item Click Listener
         lstQuestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
             @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                // ListView Clicked item index
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int itemPosition = position;
-
-                // ListView Clicked item value
-                String itemValue = (String) lstQuestionList.getItemAtPosition(position);
-
-                // Show Alert
-                Toast.makeText(getActivity(),
-                        "Position :" + itemPosition + "  ListItem : " + itemValue, Toast.LENGTH_LONG)
-                        .show();
-
+                QuestionList itemValue = (QuestionList) lstQuestionList.getItemAtPosition(position);
+                mCallbacks.onItemSelected(itemValue.get_name());
             }
-
         });
+
+        // ListView Item Click Listener
+//        lstQuestionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view,
+//                                    int position, long id) {
+//
+//                // ListView Clicked item index
+//                int itemPosition = position;
+//
+//                // ListView Clicked item value
+//                QuestionList itemValue = (QuestionList) lstQuestionList.getItemAtPosition(position);
+//
+//                getActivity().setTitle("Word List");
+//
+//                // jump to fragment question list detail
+//                FragmentManager fragmentManager = getFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//                // detach home fragment
+//                fragmentTransaction.detach(fragmentManager.findFragmentByTag("home"));
+//
+//                // attach question list detail fragment
+//                fragmentTransaction.attach(fragmentManager.findFragmentByTag("questListDetail"));
+//
+//                fragmentTransaction.commit();
+//
+//                //fragmentTransaction.replace(R.id.mainContent, fragmentManager.findFragmentByTag("questListDetail")).commit();
+//
+//
+//                // Show Alert
+//                Toast.makeText(getActivity(),
+//                        "Position :" + itemPosition + "  ListItem : " + itemValue.get_name(), Toast.LENGTH_LONG)
+//                        .show();
+//
+//            }
+//
+//        });
 
         return view;
     }
@@ -186,20 +216,71 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Restore the previously serialized activated item position.
+        if (savedInstanceState != null
+                && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
+            setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mActivatedPosition != ListView.INVALID_POSITION) {
+            // Serialize and persist the activated item position.
+            outState.putInt(STATE_ACTIVATED_POSITION, mActivatedPosition);
+        }
+    }
+
+    /**
+     * Turns on activate-on-click mode. When this mode is on, list items will be
+     * given the 'activated' state when touched.
+     */
+    public void setActivateOnItemClick(boolean activateOnItemClick) {
+        // When setting CHOICE_MODE_SINGLE, ListView will automatically
+        // give items the 'activated' state when touched.
+        lstQuestionList.setChoiceMode(activateOnItemClick
+                ? ListView.CHOICE_MODE_SINGLE
+                : ListView.CHOICE_MODE_NONE);
+    }
+
+    private void setActivatedPosition(int position) {
+        if (position == ListView.INVALID_POSITION) {
+            lstQuestionList.setItemChecked(mActivatedPosition, false);
+        } else {
+            lstQuestionList.setItemChecked(position, true);
+        }
+
+        mActivatedPosition = position;
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-//        try {
-//            mListener = (OnFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+
+        if (!(activity instanceof Callbacks)) {
+            throw new IllegalStateException("Activity must implement fragment's callbacks.");
+        }
+
+        mCallbacks = (Callbacks) activity;
+
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-//        mListener = null;
+        mListener = null;
+        mCallbacks = sDummyCallbacks;
+
     }
 
     /**
@@ -207,14 +288,14 @@ public class HomeFragment extends Fragment {
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-//    public interface OnFragmentInteractionListener {
-//        // TODO: Update argument type and name
-//        public void onFragmentInteraction(Uri uri);
-//    }
+    public interface OnFragmentInteractionListener {
+        // TODO: Update argument type and name
+        public void onFragmentInteraction(Uri uri);
+    }
 
 }

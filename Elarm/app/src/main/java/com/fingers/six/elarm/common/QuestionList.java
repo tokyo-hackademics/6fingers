@@ -1,27 +1,28 @@
 package com.fingers.six.elarm.common;
 
+import java.text.ParseException;
 import java.util.TreeSet;
 
-/**
- * Created by Nghia on 5/16/2015.
- */
 public class QuestionList {
     private int _id;
     private int _lastId;
     private String _name;
+    private String _dbName;
     private TreeSet<Word> _wordList;
     private int[] _status;
 
     public QuestionList(int id, String name) {
         set_id(id);
         set_name(name);
+        while (name.contains(" ")) name = name.replace(" ", "");
+        set_dbName(name);
         set_wordList(new TreeSet<Word>());
         set_status(new int[3]);
         set_lastId(0);
     }
 
-    public void addNewWord(int id, String eng, String jap, int score) {
-        _wordList.add(new Word(id, eng, jap, score));
+    public void addNewWord(int id, String eng, String jap, int score, int date) throws ParseException {
+        _wordList.add(new Word(id, eng, jap, score, date));
     }
 
     public void removeWord(int id) {
@@ -45,7 +46,7 @@ public class QuestionList {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Word w : _wordList) {
-            sb.append(w.toString() + System.getProperty("line.separator"));
+            sb.append(w.toString()).append(System.getProperty("line.separator"));
         }
         return sb.toString();
     }
@@ -88,5 +89,13 @@ public class QuestionList {
 
     public void set_lastId(int _lastId) {
         this._lastId = _lastId;
+    }
+
+    public String get_dbName() {
+        return _dbName;
+    }
+
+    public void set_dbName(String _dbName) {
+        this._dbName = _dbName;
     }
 }

@@ -1,73 +1,73 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.fingers.six.elarm.HomeFragment">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fingers.six.elarm.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <!--<TextView android:layout_width="match_parent" android:layout_height="match_parent"-->
-        <!--android:text="@string/hello_blank_fragment" />-->
+    <!--android:text="@string/hello_blank_fragment" />-->
 
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left|top">
+        android:layout_gravity="left|top"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.05">
+            android:layout_weight="0.05"
+            android:orientation="horizontal">
 
             <EditText
+                android:id="@+id/txtInputKeyword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtInputKeyword"
+                android:hint="ex: TOEFL, TOEIC, ..."
+
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/btnSearch"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Search"
-                android:id="@+id/btnSearch" />
+                android:text="Search" />
 
         </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="ex: TOEFL, TOEIC, ..."
-            android:id="@+id/textView" />
+
 
         <ListView
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
             android:id="@+id/lstQuestionList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="right|top"
-            android:layout_height="match_parent" />
+            android:layout_weight="1" />
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.05"
+            android:orientation="horizontal"
             android:weightSum="1">
 
             <EditText
+                android:id="@+id/txtAddList"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtAddList"
                 android:layout_weight="1" />
 
             <Button
+                android:id="@+id/btnAdd"
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Add"
-                android:id="@+id/btnAdd" />
+                android:text="Add" />
 
         </LinearLayout>
 
