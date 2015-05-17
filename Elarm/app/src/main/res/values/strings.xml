@@ -2,4 +2,22 @@
     <string name="app_name">Elarm</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_main_fragment">Hello Elarm Main fragment</string>
+    <string name="hello_settings_fragment">Hello settings fragment</string>
+    <string name="setting_time_mode_title">Time modes</string>
+    <string name="setting_time_mode_1">Time limited on each question</string>
+    <string name="setting_time_mode_2">Time limited on each question list</string>
+    <string name="setting_time_mode_3">No time limit</string>
+    <string name="setting_unlock_alarm">Unlock Screen/ Alarm</string>
+    <string name="setting_unlock_1">Show questions when screen is unlocked</string>
+    <string name="action_example">action_example</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_question_list_detail">QuestionListDetailActivity</string>
+
+    <string name="title_activity_question">QuestionActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

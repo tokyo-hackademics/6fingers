@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fingers.six.elarm" >
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -15,6 +18,19 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".fragments.AlarmSettingFragment"
+            android:label="alarmsetting" />
+        <activity
+            android:name=".QuestionListDetailActivity"
+            android:label="@string/title_activity_question_list_detail" >
+        </activity>
+        <activity
+            android:name=".QuestionActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_question"
+            android:theme="@style/FullscreenTheme" >
         </activity>
     </application>
 

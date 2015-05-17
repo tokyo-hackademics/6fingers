@@ -1,0 +1,61 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.fingers.six.elarm.fragments.QuestionListDetailFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <!--<TextView android:layout_width="match_parent" android:layout_height="match_parent"-->
+    <!--android:text="@string/hello_blank_fragment" />-->
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|top"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/lstQuestionDetailList"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|top"
+            android:layout_weight="1" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+                <EditText
+                    android:id="@+id/txtAddWord"
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:hint="new word" />
+
+                <EditText
+                    android:id="@+id/txtAddMeaning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="new meaning"
+                    android:layout_toEndOf="@+id/txtAddWord"
+                    android:layout_toRightOf="@+id/txtAddWord"
+                    android:layout_toStartOf="@+id/btnAdd"
+                    android:layout_toLeftOf="@+id/btnAdd" />
+
+                <Button
+                    android:id="@+id/btnAdd"
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:text="Add" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</FrameLayout>

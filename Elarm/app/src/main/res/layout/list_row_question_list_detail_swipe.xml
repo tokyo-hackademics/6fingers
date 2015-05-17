@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeQuestionListDetail"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    swipe:leftEdgeSwipeOffset="0dp"
+    swipe:rightEdgeSwipeOffset="0dp">
+
+    <LinearLayout
+        android:id="@+id/bottomQuestionListDetailWrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:tag="bottomQuestionListDetail">
+
+        <ImageView
+            android:id="@+id/star2"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="#4cd964"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:src="@drawable/star" />
+
+        <ImageView
+            android:id="@+id/trash2"
+            android:layout_width="70dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/red"
+            android:paddingLeft="25dp"
+            android:paddingRight="25dp"
+            android:src="@drawable/trash" />
+    </LinearLayout>
+
+    <RelativeLayout
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/lblWord"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:text="word" />
+
+        <TextView
+            android:id="@+id/lblMeaning"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/lblWord"
+            android:layout_toRightOf="@+id/lblWord"
+            android:maxLines="3"
+            android:text="meaning" />
+        <!--<Button-->
+        <!--android:id="@+id/btnAdd"-->
+        <!--style="?android:attr/buttonStyleSmall"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_alignParentEnd="true"-->
+        <!--android:text="Add" />-->
+
+    </RelativeLayout>
+
+</com.daimajia.swipe.SwipeLayout>

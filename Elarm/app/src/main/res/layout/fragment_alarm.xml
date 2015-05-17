@@ -1,0 +1,27 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="com.fingers.six.elarm.Alarm">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left|top">
+
+        <ListView
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/AlarmList"
+            android:layout_gravity="right|top"
+            android:layout_height="match_parent" />
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add"
+            android:id="@+id/btnAdd" />
+
+
+    </LinearLayout>
+
+</FrameLayout>
